@@ -18,9 +18,9 @@ export const signUpSchema = z.object({
         .min(2, { message: "Name must be at least 2 characters" })
         .max(15, { message: "Name cannot exceed 15 characters" }),
 
-    avatar: z
+    otp: z
         .string()
-        .url({ message: "Avatar must be a valid URL" })
-        .optional()
-        .or(z.literal("")),
+        .trim()
+        .length(6, { message: "OTP must be exactly 6 digits" })
+        .regex(/^\d+$/, { message: "OTP must contain only numbers" }),
 });
