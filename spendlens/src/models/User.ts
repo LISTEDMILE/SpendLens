@@ -2,10 +2,11 @@ import mongoose, { Schema, Document } from "mongoose";
 
 export interface User extends Document {
     username: string;
-    password: string;
+    password?: string;
     subscriptions: mongoose.ObjectId[];
     name: string;
     avatar: string;
+    provider: string;
 }
 
 const UserSchema: Schema<User> = new Schema({
@@ -16,10 +17,7 @@ const UserSchema: Schema<User> = new Schema({
         lowercase: true,
         match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Enter valid Email"],
     },
-    password: {
-        type: String,
-        required: [true, "Password is Required"],
-    },
+
     subscriptions: {
         type: [
             {
@@ -37,6 +35,19 @@ const UserSchema: Schema<User> = new Schema({
     avatar: {
         type: String,
         default: null,
+    },
+    password: {
+        type: String,
+        required: function () {
+            return this.provider === "credentials";
+        },
+    },
+
+    provider: {
+        type: String,
+        enum: ["credentials", "google", "github"],
+        default: "credentials",
+        required: true,
     },
 });
 
