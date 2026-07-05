@@ -3,10 +3,11 @@ import { resend } from "@/lib/Resend";
 import { ApiRespone } from "@/types/ApiResponse";
 
 export async function SendOtp(
-    otp: string,
-    username: string,
+   username: string, otp: string,
+    
 ): Promise<ApiRespone> {
     try {
+        console.log(username, otp);
         const { data, error } = await resend.emails.send({
             from: "onboarding@resend.dev",
             to: username,
