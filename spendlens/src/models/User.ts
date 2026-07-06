@@ -6,6 +6,7 @@ export interface User extends Document {
     subscriptions: mongoose.ObjectId[];
     name: string;
     avatar: string;
+    cloudinaryId: string;
     provider: string;
 }
 
@@ -35,6 +36,10 @@ const UserSchema: Schema<User> = new Schema({
     avatar: {
         type: String,
         default: null,
+    },
+    cloudinaryId: {
+        type: String,
+    
     },
     password: {
         type: String,

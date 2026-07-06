@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Types, Schema, Document } from "mongoose";
 
 export interface Subscription extends Document {
     startDate: Date;
@@ -8,7 +8,7 @@ export interface Subscription extends Document {
     reminderDays: number;
     status: string;
     paymentMethod: string;
-    user: mongoose.ObjectId;
+    user: Types.ObjectId;
 }
 
 const SubscriptionSchema: Schema<Subscription> = new Schema({
@@ -43,7 +43,7 @@ const SubscriptionSchema: Schema<Subscription> = new Schema({
         enum: ["Credit Card", "Debit Card", "UPI", "PayPal", "Other"],
     },
     user: {
-        type: Schema.Types.ObjectId,
+        type: Types.ObjectId,
         ref: "User",
     },
 });
