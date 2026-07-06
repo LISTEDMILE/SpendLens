@@ -38,6 +38,7 @@ export async function POST(request: Request) {
 
         const { username, name, password, otp } = result.data;
 
+
         const existingUser = await UserModel.findOne({ username });
         if (existingUser)
             return SendResponse({
