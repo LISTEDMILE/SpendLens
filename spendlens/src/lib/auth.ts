@@ -127,7 +127,7 @@ export const authOptions: NextAuthOptions = {
             }
         },
 
-        async jwt({ token, user }) {
+        async jwt({ token, user, trigger, session }) {
             if (user?.email) {
                 await dbConnect();
 
@@ -137,7 +137,14 @@ export const authOptions: NextAuthOptions = {
 
                 if (dbUser) {
                     token.id = dbUser._id.toString();
+                    token.name = dbUser.name;
+                    if (dbUser.avatar) token.picture = dbUser.avatar;
                 }
+            }
+
+            if (trigger === "update") {
+                token.name = session.name;
+                token.picture = session.image;
             }
 
             return token;
@@ -146,6 +153,8 @@ export const authOptions: NextAuthOptions = {
         async session({ session, token }) {
             if (session.user) {
                 session.user.id = token.id as string;
+                session.user.name = token.name as string;
+                session.user.image = token.picture as string;
             }
 
             return session;
