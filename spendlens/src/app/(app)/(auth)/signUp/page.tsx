@@ -44,7 +44,7 @@ export default function SignupPage() {
 
   // ---------------- SEND OTP ----------------
 
-  async function sendOtp(values: SignupFormValues) {
+  async function sendOtp(username:String,) {
     try {
       setLoadingOtp(true);
       setError("");
@@ -56,7 +56,7 @@ export default function SignupPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: values.username,
+          username: username,
         }),
       });
 
@@ -253,7 +253,7 @@ export default function SignupPage() {
                 type="button"
                 className="w-full"
                 disabled={loadingOtp}
-                onClick={form.handleSubmit(sendOtp)}
+                onClick={()=>sendOtp(form.watch("username"))}
               >
                 {loadingOtp ? "Sending OTP..." : "Send OTP"}
               </Button>
