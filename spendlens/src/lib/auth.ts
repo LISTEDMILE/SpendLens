@@ -9,9 +9,9 @@ import UserModel from "@/models/User";
 
 export const authOptions: NextAuthOptions = {
     pages: {
-    signIn: "/login",
-    error: "/login",
-  },
+        signIn: "/login",
+        error: "/login",
+    },
     providers: [
         GoogleProvider({
             clientId: process.env.AUTH_GOOGLE_ID!,

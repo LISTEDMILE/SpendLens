@@ -1,11 +1,11 @@
 import OtpEmail from "@/emailStructure/otp";
 import { resend } from "@/lib/Resend";
-import { ApiRespone } from "@/types/ApiResponse";
+import { ApiResponse } from "@/types/ApiResponse";
 
 export async function SendOtp(
-   username: string, otp: string,
-    
-): Promise<ApiRespone> {
+    username: string,
+    otp: string,
+): Promise<ApiResponse> {
     try {
         console.log(username, otp);
         const { data, error } = await resend.emails.send({

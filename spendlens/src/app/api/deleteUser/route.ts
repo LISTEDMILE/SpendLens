@@ -36,9 +36,9 @@ export async function DELETE() {
             user: new mongoose.Types.ObjectId(session.user.id),
         });
 
-       if (user.cloudinaryId) {
-    await cloudinary.uploader.destroy(user.cloudinaryId);
-}
+        if (user.cloudinaryId) {
+            await cloudinary.uploader.destroy(user.cloudinaryId);
+        }
 
         // Delete user
         await UserModel.findByIdAndDelete(user._id);

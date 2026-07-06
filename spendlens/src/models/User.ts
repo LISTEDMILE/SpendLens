@@ -39,7 +39,6 @@ const UserSchema: Schema<User> = new Schema({
     },
     cloudinaryId: {
         type: String,
-    
     },
     password: {
         type: String,

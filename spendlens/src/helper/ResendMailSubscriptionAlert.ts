@@ -1,6 +1,6 @@
 import SubscriptionAlert from "@/emailStructure/subscriptionAlert";
 import { resend } from "@/lib/Resend";
-import { ApiRespone } from "@/types/ApiResponse";
+import { ApiResponse } from "@/types/ApiResponse";
 
 interface SubscriptionAlertProps {
     name: string;
@@ -18,7 +18,7 @@ export async function SendSubscriptionAlert({
     renewalDate,
     reminderDays,
     username,
-}: SubscriptionAlertProps): Promise<ApiRespone> {
+}: SubscriptionAlertProps): Promise<ApiResponse> {
     try {
         const { data, error } = await resend.emails.send({
             from: "onboarding@resend.dev",

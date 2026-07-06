@@ -11,11 +11,8 @@ export async function POST(request: Request) {
 
         let body;
 
-        
-
         try {
             body = await request.json();
-           
         } catch {
             return SendResponse({
                 success: false,
@@ -26,8 +23,6 @@ export async function POST(request: Request) {
 
         const result = signUpSchema.safeParse(body);
 
-       
-
         if (!result.success) {
             return SendResponse({
                 success: false,
@@ -37,7 +32,6 @@ export async function POST(request: Request) {
         }
 
         const { username, name, password, otp } = result.data;
-
 
         const existingUser = await UserModel.findOne({ username });
         if (existingUser)

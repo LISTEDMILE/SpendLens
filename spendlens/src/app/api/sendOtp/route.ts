@@ -32,7 +32,6 @@ export async function POST(request: Request) {
         }
 
         const { username } = result.data;
-       
 
         await OtpModel.findOneAndDelete({ username });
 

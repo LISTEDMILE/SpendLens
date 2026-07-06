@@ -24,11 +24,10 @@ import { Button } from "@/components/ui/button";
 type LoginData = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
-
     const searchParams = useSearchParams();
 
     const oauthError = searchParams.get("error");
-    
+
     const router = useRouter();
 
     const [loading, setLoading] = useState(false);
@@ -81,11 +80,12 @@ export default function LoginPage() {
                 <p className="mb-8 text-center text-sm text-muted-foreground">
                     Login to continue managing your subscriptions.
                 </p>
-{oauthError === "AccessDenied" && (
-    <p className="mb-4 rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-600">
-        This account was created using a different sign-in method.
-    </p>
-)}
+                {oauthError === "AccessDenied" && (
+                    <p className="mb-4 rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-600">
+                        This account was created using a different sign-in
+                        method.
+                    </p>
+                )}
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
@@ -175,14 +175,14 @@ export default function LoginPage() {
                     </Button>
 
                     <Button
-  onClick={() =>
-    signOut({
-      callbackUrl: "/login",
-    })
-  }
->
-  Logout
-</Button>
+                        onClick={() =>
+                            signOut({
+                                callbackUrl: "/login",
+                            })
+                        }
+                    >
+                        Logout
+                    </Button>
                 </div>
             </div>
         </div>

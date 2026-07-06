@@ -170,7 +170,7 @@ export default function OtpEmail({ otp }: OtpEmailProps) {
                                 margin: 0,
                             }}
                         >
-                             {new Date().getFullYear()} SpensLens
+                            {new Date().getFullYear()} SpensLens
                         </Text>
                     </Section>
                 </Container>
