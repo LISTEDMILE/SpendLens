@@ -8,6 +8,10 @@ import dbConnect from "./DbConnect";
 import UserModel from "@/models/User";
 
 export const authOptions: NextAuthOptions = {
+    pages: {
+    signIn: "/login",
+    error: "/login",
+  },
     providers: [
         GoogleProvider({
             clientId: process.env.AUTH_GOOGLE_ID!,
@@ -50,6 +54,10 @@ export const authOptions: NextAuthOptions = {
                         return null;
                     }
 
+                    if (user.provider !== "credentials") {
+                        return null;
+                    }
+
                     if (!user.password) {
                         return null;
                     }
@@ -58,6 +66,8 @@ export const authOptions: NextAuthOptions = {
                         credentials.password,
                         user.password,
                     );
+
+                    if (!isMatch) return null;
 
                     return {
                         id: user._id.toString(),
@@ -93,6 +103,10 @@ export const authOptions: NextAuthOptions = {
 
                 // User already exists
                 if (existingUser) {
+                    if (existingUser.provider !== account.provider) {
+                        return false;
+                    }
+
                     return true;
                 }
 
@@ -101,6 +115,7 @@ export const authOptions: NextAuthOptions = {
                     username: user.email,
                     name: user.name,
                     provider: account.provider,
+                    avatar: user.image,
                 });
 
                 await newUser.save();
@@ -113,8 +128,16 @@ export const authOptions: NextAuthOptions = {
         },
 
         async jwt({ token, user }) {
-            if (user) {
-                token.id = user.id;
+            if (user?.email) {
+                await dbConnect();
+
+                const dbUser = await UserModel.findOne({
+                    username: user.email,
+                });
+
+                if (dbUser) {
+                    token.id = dbUser._id.toString();
+                }
             }
 
             return token;
