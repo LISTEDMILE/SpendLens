@@ -153,7 +153,7 @@ function FormMessage({
   return (
     <p
       id={formMessageId}
-      className={cn("text-[0.8rem] font-medium text-destructive", className)}
+      className={cn("text-[0.8rem] font-medium text-destructive text-red-600", className)}
       {...props}
     >
       {body}

@@ -21,6 +21,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 
 export default function AddSubscriptionPage() {
     const [loading, setLoading] = useState(false);
@@ -120,11 +121,11 @@ export default function AddSubscriptionPage() {
                 form.reset();
             }
 
-            alert(
-                isEdit
+            toast.success("Success", {
+                description: isEdit
                     ? "Subscription updated successfully!"
                     : "Subscription added successfully!",
-            );
+            });
         } catch {
             form.setError("root", {
                 message: "Something went wrong.",
@@ -135,199 +136,257 @@ export default function AddSubscriptionPage() {
     };
 
     return (
-        <div className="mx-auto max-w-2xl p-6">
-            <div className="rounded-xl border bg-background p-8 shadow-lg">
-                <h1 className="mb-8 text-3xl font-bold">
-                    {isEdit ? "Edit Subscription" : "Add Subscription"}
-                </h1>
+        <div className="w-screen min-h-screen bg-lime-100">
+            <div className="mx-auto max-w-2xl  p-6">
+                <div className="rounded-xl border bg-background p-8 bg-white shadow-lg">
+                    <h1 className="mb-8 text-3xl font-bold">
+                        {isEdit ? "Edit Subscription" : "Add Subscription"}
+                    </h1>
 
-                <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="space-y-6"
-                    >
-                        {/* Name */}
-                        <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Subscription Name</FormLabel>
-
-                                    <FormControl>
-                                        <Input
-                                            placeholder="Netflix"
-                                            {...field}
-                                        />
-                                    </FormControl>
-
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        {/* Dates */}
-                        <div className="grid grid-cols-2 gap-4">
-                            <FormField
-                                control={form.control}
-                                name="startDate"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Start Date</FormLabel>
-
-                                        <FormControl>
-                                            <Input type="date" {...field} />
-                                        </FormControl>
-
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="endDate"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>End Date</FormLabel>
-
-                                        <FormControl>
-                                            <Input type="date" {...field} />
-                                        </FormControl>
-
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-                        {/* Price */}
-                        <FormField
-                            control={form.control}
-                            name="price"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Price</FormLabel>
-
-                                    <FormControl>
-                                        <Input
-                                            type="number"
-                                            placeholder="499"
-                                            {...field}
-                                        />
-                                    </FormControl>
-
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />{" "}
-                        {/* Reminder */}
-                        <FormField
-                            control={form.control}
-                            name="reminderDays"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>
-                                        Reminder Days Before Renewal
-                                    </FormLabel>
-
-                                    <FormControl>
-                                        <Input
-                                            type="number"
-                                            placeholder="3"
-                                            {...field}
-                                        />
-                                    </FormControl>
-
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        {/* Status */}
-                        <FormField
-                            control={form.control}
-                            name="status"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Status</FormLabel>
-
-                                    <FormControl>
-                                        <select
-                                            className="w-full rounded-md border bg-background px-3 py-2"
-                                            {...field}
-                                        >
-                                            <option value="active">
-                                                Active
-                                            </option>
-
-                                            <option value="paused">
-                                                Paused
-                                            </option>
-
-                                            <option value="cancelled">
-                                                Cancelled
-                                            </option>
-                                        </select>
-                                    </FormControl>
-
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        {/* Payment Method */}
-                        <FormField
-                            control={form.control}
-                            name="paymentMethod"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Payment Method</FormLabel>
-
-                                    <FormControl>
-                                        <select
-                                            className="w-full rounded-md border bg-background px-3 py-2"
-                                            {...field}
-                                        >
-                                            <option value="Credit Card">
-                                                Credit Card
-                                            </option>
-
-                                            <option value="Debit Card">
-                                                Debit Card
-                                            </option>
-
-                                            <option value="UPI">UPI</option>
-
-                                            <option value="PayPal">
-                                                PayPal
-                                            </option>
-
-                                            <option value="Other">Other</option>
-                                        </select>
-                                    </FormControl>
-
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        {/* Root Error */}
-                        {form.formState.errors.root && (
-                            <p className="text-sm text-red-500">
-                                {form.formState.errors.root.message}
-                            </p>
-                        )}
-                        <Button
-                            type="submit"
-                            className="w-full"
-                            disabled={loading}
+                    <Form {...form}>
+                        <form
+                            onSubmit={form.handleSubmit(onSubmit)}
+                            className="space-y-6"
                         >
-                            {loading
-                                ? isEdit
-                                    ? "Updating Subscription..."
-                                    : "Adding Subscription..."
-                                : isEdit
-                                  ? "Update Subscription"
-                                  : "Add Subscription"}
-                        </Button>
-                    </form>
-                </Form>
+                            {/* Name */}
+                            <FormField
+                                control={form.control}
+                                name="name"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Subscription Name</FormLabel>
+
+                                        <FormControl>
+                                            <Input
+                                                className="
+        h-11 rounded-lg border-zinc-300 focus-visible:ring-1 focus-visible:ring-zinc-400
+        focus-visible:border-zinc-400 aria-invalid:ring-0 aria-invalid:border-red-400"
+                                                placeholder="Netflix"
+                                                {...field}
+                                            />
+                                        </FormControl>
+
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            {/* Dates */}
+                            <div className="grid grid-cols-2 gap-4">
+                                <FormField
+                                    control={form.control}
+                                    name="startDate"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Start Date</FormLabel>
+
+                                            <FormControl>
+                                                <Input
+                                                    className="
+        h-11
+        rounded-lg
+        border-zinc-300
+        focus-visible:ring-1
+        focus-visible:ring-zinc-400
+        focus-visible:border-zinc-400
+        aria-invalid:ring-0
+aria-invalid:border-red-400
+    
+    "
+                                                    type="date"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name="endDate"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>End Date</FormLabel>
+
+                                            <FormControl>
+                                                <Input
+                                                    className="
+        h-11
+        rounded-lg
+        border-zinc-300
+        focus-visible:ring-1
+        focus-visible:ring-zinc-400
+        focus-visible:border-zinc-400
+        aria-invalid:ring-0
+aria-invalid:border-red-400
+    
+    "
+                                                    type="date"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            {/* Price */}
+                            <FormField
+                                control={form.control}
+                                name="price"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Price</FormLabel>
+
+                                        <FormControl>
+                                            <Input
+                                                className="
+        h-11
+        rounded-lg
+        border-zinc-300
+        focus-visible:ring-1
+        focus-visible:ring-zinc-400
+        focus-visible:border-zinc-400
+        aria-invalid:ring-0
+aria-invalid:border-red-400
+    
+    "
+
+                                                type="number"
+                                                placeholder="499"
+                                                {...field}
+                                            />
+                                        </FormControl>
+
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />{" "}
+                            {/* Reminder */}
+                            <FormField
+                                control={form.control}
+                                name="reminderDays"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>
+                                            Reminder Days Before Renewal
+                                        </FormLabel>
+
+                                        <FormControl>
+                                            <Input
+                                                className="
+        h-11
+        rounded-lg
+        border-zinc-300
+        focus-visible:ring-1
+        focus-visible:ring-zinc-400
+        focus-visible:border-zinc-400
+        aria-invalid:ring-0
+aria-invalid:border-red-400
+    "
+
+                                                type="number"
+                                                placeholder="3"
+                                                {...field}
+                                            />
+                                        </FormControl>
+
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            {/* Status */}
+                            <FormField
+                                control={form.control}
+                                name="status"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Status</FormLabel>
+
+                                        <FormControl>
+                                            <select
+                                                className="w-full rounded-md border bg-background px-3 py-2"
+                                                {...field}
+                                            >
+                                                <option value="active">
+                                                    Active
+                                                </option>
+
+                                                <option value="paused">
+                                                    Paused
+                                                </option>
+
+                                                <option value="cancelled">
+                                                    Cancelled
+                                                </option>
+                                            </select>
+                                        </FormControl>
+
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            {/* Payment Method */}
+                            <FormField
+                                control={form.control}
+                                name="paymentMethod"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Payment Method</FormLabel>
+
+                                        <FormControl>
+                                            <select
+                                                className="w-full rounded-md border bg-background px-3 py-2"
+                                                {...field}
+                                            >
+                                                <option value="Credit Card">
+                                                    Credit Card
+                                                </option>
+
+                                                <option value="Debit Card">
+                                                    Debit Card
+                                                </option>
+
+                                                <option value="UPI">UPI</option>
+
+                                                <option value="PayPal">
+                                                    PayPal
+                                                </option>
+
+                                                <option value="Other">
+                                                    Other
+                                                </option>
+                                            </select>
+                                        </FormControl>
+
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            {/* Root Error */}
+                            {form.formState.errors.root && (
+                                <p className="text-sm text-red-500">
+                                    {form.formState.errors.root.message}
+                                </p>
+                            )}
+                            <Button
+                                type="submit"
+                                className="w-fit bg-zinc-600 text-white px-8 py-6 "
+                                disabled={loading}
+                            >
+                                {loading
+                                    ? isEdit
+                                        ? "Updating Subscription..."
+                                        : "Adding Subscription..."
+                                    : isEdit
+                                      ? "Update Subscription"
+                                      : "Add Subscription"}
+                            </Button>
+                        </form>
+                    </Form>
+                </div>
             </div>
         </div>
     );

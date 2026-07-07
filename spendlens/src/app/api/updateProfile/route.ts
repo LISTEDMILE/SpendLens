@@ -77,6 +77,12 @@ export async function PATCH(request: Request) {
             });
         }
 
+        if(!name || name == "") return SendResponse({
+                success: false,
+                status: 400,
+                message: "Enter your Name",
+            });
+
         user.name = name;
 
         if (avatar && avatar.size > 0) {

@@ -2,6 +2,7 @@ import SessionWrapper from "@/components/SessionWrapper";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 import "@/app/globals.css";
+import { Toaster } from "sonner";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -13,7 +14,9 @@ export default function RootLayout({
     return (
         <html lang="en" className={cn("font-sans", geist.variable)}>
             <body>
-                <SessionWrapper>{children}</SessionWrapper>
+                <SessionWrapper>
+                    {children} <Toaster richColors />
+                </SessionWrapper>
             </body>
         </html>
     );
