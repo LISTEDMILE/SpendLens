@@ -1,117 +1,120 @@
-"use client";
-
 import Link from "next/link";
+import { Mail } from "lucide-react";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
+
 
 export default function Footer() {
     return (
-        <footer className="border-t bg-background">
-            <div className="mx-auto flex max-w-7xl flex-col gap-8 px-6 py-10 md:flex-row md:items-center md:justify-between">
-                {/* Logo & Description */}
-                <div className="space-y-2">
-                    <Link
-                        href="/"
-                        className="text-2xl font-bold tracking-tight"
-                    >
-                        <span className="text-primary">Spend</span>Lens
+        <footer className="border-t border-zinc-800 bg-zinc-950">
+    <div className="mx-auto max-w-7xl px-6 py-14">
+        <div className="grid gap-10 md:grid-cols-4">
+            {/* Brand */}
+            <div className="md:col-span-2">
+                <h2 className="text-2xl font-bold text-white">
+                    SpendLens
+                </h2>
+
+                <p className="mt-4 max-w-md leading-7 text-zinc-400">
+                    SpendLens helps you organize subscriptions, track recurring
+                    expenses, and receive timely renewal reminders—all from one
+                    simple dashboard.
+                </p>
+            </div>
+
+            {/* Navigation */}
+            <div>
+                <h3 className="mb-4 text-lg font-semibold text-white">
+                    Navigation
+                </h3>
+
+                <div className="flex flex-col gap-3 text-zinc-400">
+                    <Link href="/" className="transition hover:text-white">
+                        Home
                     </Link>
 
-                    <p className="max-w-sm text-sm text-muted-foreground">
-                        Keep track of your subscriptions, monitor recurring
-                        expenses, and never miss a renewal again.
-                    </p>
-                </div>
+                    <Link href="/about" className="transition hover:text-white">
+                        About
+                    </Link>
 
-                {/* Quick Links */}
-                <div className="flex flex-wrap gap-8 text-sm">
-                    <div className="space-y-2">
-                        <h3 className="font-semibold">Product</h3>
+                    <Link
+                        href="/subscriptions"
+                        className="transition hover:text-white"
+                    >
+                        Dashboard
+                    </Link>
 
-                        <div className="flex flex-col gap-1 text-muted-foreground">
-                            <Link
-                                href="/dashboard"
-                                className="hover:text-foreground"
-                            >
-                                Dashboard
-                            </Link>
+                    <Link href="/help" className="transition hover:text-white">
+                        Help
+                    </Link>
 
-                            <Link
-                                href="/subscriptions"
-                                className="hover:text-foreground"
-                            >
-                                Subscriptions
-                            </Link>
-
-                            <Link
-                                href="/analytics"
-                                className="hover:text-foreground"
-                            >
-                                Analytics
-                            </Link>
-                        </div>
-                    </div>
-
-                    <div className="space-y-2">
-                        <h3 className="font-semibold">Company</h3>
-
-                        <div className="flex flex-col gap-1 text-muted-foreground">
-                            <Link
-                                href="/about"
-                                className="hover:text-foreground"
-                            >
-                                About
-                            </Link>
-
-                            <Link
-                                href="/contact"
-                                className="hover:text-foreground"
-                            >
-                                Contact
-                            </Link>
-
-                            <Link
-                                href="/support"
-                                className="hover:text-foreground"
-                            >
-                                Support
-                            </Link>
-                        </div>
-                    </div>
-
-                    <div className="space-y-2">
-                        <h3 className="font-semibold">Legal</h3>
-
-                        <div className="flex flex-col gap-1 text-muted-foreground">
-                            <Link
-                                href="/privacy"
-                                className="hover:text-foreground"
-                            >
-                                Privacy Policy
-                            </Link>
-
-                            <Link
-                                href="/terms"
-                                className="hover:text-foreground"
-                            >
-                                Terms of Service
-                            </Link>
-                        </div>
-                    </div>
+                    <Link
+                        href="/contact"
+                        className="transition hover:text-white"
+                    >
+                        Contact
+                    </Link>
                 </div>
             </div>
 
-            {/* Bottom Footer */}
-            <div className="border-t">
-                <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-4 text-sm text-muted-foreground md:flex-row">
-                    <p>
-                        © {new Date().getFullYear()} SpendLens. All rights
-                        reserved.
-                    </p>
+            {/* Connect */}
+            <div>
+                <h3 className="mb-4 text-lg font-semibold text-white">
+                    Connect
+                </h3>
 
-                    <div className="flex items-center gap-4">
-                        <p>Built with ❤️ using Next.js & shadcn/ui</p>
-                    </div>
+                <div className="flex gap-3">
+                    <Link
+                        href=""
+                        target="_blank"
+                        className="rounded-lg border border-zinc-800 p-2 text-zinc-400 transition hover:border-cyan-500 hover:text-cyan-400"
+                    >
+                        <FaGithub className="h-5 w-5" />
+                    </Link>
+
+                    <Link
+                        href=""
+                        target="_blank"
+                        className="rounded-lg border border-zinc-800 p-2 text-zinc-400 transition hover:border-cyan-500 hover:text-cyan-400"
+                    >
+                        <FaLinkedin className="h-5 w-5" />
+                    </Link>
+
+                    <Link
+                        href=""
+                        className="rounded-lg border border-zinc-800 p-2 text-zinc-400 transition hover:border-cyan-500 hover:text-cyan-400"
+                    >
+                        <Mail className="h-5 w-5" />
+                    </Link>
                 </div>
+
+                <p className="mt-5 text-sm text-zinc-500">
+                    spendlens@email.com
+                </p>
             </div>
-        </footer>
-    );
+        </div>
+
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-zinc-800 pt-6 text-sm text-zinc-500 md:flex-row">
+            <p>
+                 {new Date().getFullYear()} SpendLens. 
+            </p>
+
+            <div className="flex gap-6">
+                <Link
+                    href=""
+                    className="transition hover:text-white"
+                >
+                    Privacy Policy
+                </Link>
+
+                <Link
+                    href=""
+                    className="transition hover:text-white"
+                >
+                    Terms of Service
+                </Link>
+            </div>
+        </div>
+    </div>
+</footer>
+    )
 }

@@ -74,14 +74,21 @@ export default function Header() {
                         href="/about"
                         className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:underline"
                     >
-                        About
+                        AboutUs
+                        </Link>
+                        
+                        <Link
+                        href="/help"
+                        className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:underline"
+                    >
+                        Help
                     </Link>
 
                     <Link
                         href="/contact"
                         className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:underline"
                     >
-                        Contact Us
+                        ContactUs
                     </Link>
                 </nav>}
 
@@ -211,7 +218,15 @@ export default function Header() {
                              onClick={() => setShowSideBar(false)}
                         className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:underline"
                     >
-                        About
+                        AboutUs
+                        </Link>
+                        
+                         <Link
+                            href="/help"
+                             onClick={() => setShowSideBar(false)}
+                        className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:underline"
+                    >
+                        Help
                     </Link>
 
                     <Link
@@ -219,7 +234,7 @@ export default function Header() {
                              onClick={() => setShowSideBar(false)}
                         className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:underline"
                     >
-                        Contact Us
+                        ContactUs
                     </Link>
                     </nav>
                     
