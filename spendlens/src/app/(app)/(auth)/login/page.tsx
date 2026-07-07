@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { signIn, signOut } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,6 +20,7 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 type LoginData = z.infer<typeof loginSchema>;
 
@@ -57,7 +58,7 @@ export default function LoginPage() {
                 return;
             }
 
-            router.push("/dashboard");
+            router.push("/subscriptions");
             router.refresh();
         } catch (error) {
             console.error(error);
@@ -71,118 +72,147 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-muted px-4">
-            <div className="w-full max-w-md rounded-xl border bg-background p-8 shadow-lg">
-                <h1 className="mb-2 text-center text-3xl font-bold">
-                    Welcome Back
-                </h1>
+        <div className="min-h-screen bg-lime-100 py-12">
+            <div className="mx-auto flex min-h-[calc(100vh-6rem)] max-w-2xl items-center px-5">
+                <div className="w-full rounded-2xl bg-white p-8 shadow-2xl">
+                    <div className="mb-8 text-center">
+                        <h1 className="text-3xl font-bold text-zinc-900">
+                            Welcome Back
+                        </h1>
 
-                <p className="mb-8 text-center text-sm text-muted-foreground">
-                    Login to continue managing your subscriptions.
-                </p>
-                {oauthError === "AccessDenied" && (
-                    <p className="mb-4 rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-600">
-                        This account was created using a different sign-in
-                        method.
-                    </p>
-                )}
-                <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="space-y-5"
-                    >
-                        <FormField
-                            control={form.control}
-                            name="username"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Email</FormLabel>
+                        <p className="mt-2 text-sm text-zinc-500">
+                            Sign in to continue managing your subscriptions.
+                        </p>
+                    </div>
 
-                                    <FormControl>
-                                        <Input
-                                            type="email"
-                                            placeholder="Enter your email"
-                                            {...field}
-                                        />
-                                    </FormControl>
-
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <FormField
-                            control={form.control}
-                            name="password"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Password</FormLabel>
-
-                                    <FormControl>
-                                        <Input
-                                            type="password"
-                                            placeholder="Enter your password"
-                                            {...field}
-                                        />
-                                    </FormControl>
-
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        {form.formState.errors.root && (
-                            <p className="text-sm text-red-500">
-                                {form.formState.errors.root.message}
+                    {oauthError === "AccessDenied" && (
+                        <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4">
+                            <p className="text-sm text-red-600">
+                                This account was created using a different
+                                sign-in method.
                             </p>
-                        )}
+                        </div>
+                    )}
+
+                    <Form {...form}>
+                        <form
+                            onSubmit={form.handleSubmit(onSubmit)}
+                            className="space-y-5"
+                        >
+                            <FormField
+                                control={form.control}
+                                name="username"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Email Address</FormLabel>
+
+                                        <FormControl>
+                                            <Input
+                                                type="email"
+                                                placeholder="john@example.com"
+                                                className="
+        h-11 rounded-lg border-zinc-300 focus-visible:ring-1 focus-visible:ring-zinc-400
+        focus-visible:border-zinc-400 aria-invalid:ring-0 aria-invalid:border-red-400"
+
+                                                {...field}
+                                            />
+                                        </FormControl>
+
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                control={form.control}
+                                name="password"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Password</FormLabel>
+
+                                        <FormControl>
+                                            <Input
+                                                type="password"
+                                                placeholder="Enter your password"
+                                                className="
+        h-11 rounded-lg border-zinc-300 focus-visible:ring-1 focus-visible:ring-zinc-400
+        focus-visible:border-zinc-400 aria-invalid:ring-0 aria-invalid:border-red-400"
+
+                                                {...field}
+                                            />
+                                        </FormControl>
+
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            {form.formState.errors.root && (
+                                <div className="rounded-lg border border-red-200 bg-red-50 p-3">
+                                    <p className="text-sm text-red-600">
+                                        {form.formState.errors.root.message}
+                                    </p>
+                                </div>
+                            )}
+
+                            <Button
+                                type="submit"
+                                disabled={loading}
+                                className="h-11 w-fit px-8 py-6 bg-zinc-600 text-white rounded-lg "
+                            >
+                                {loading ? "Signing In..." : "Sign In"}
+                            </Button>
+                        </form>
+                    </Form>
+
+                    <div className="my-8 flex items-center gap-4">
+                        <div className="h-px flex-1 bg-zinc-200" />
+
+                        <span className="text-xs uppercase tracking-wider text-zinc-400">
+                            Or continue with
+                        </span>
+
+                        <div className="h-px flex-1 bg-zinc-200" />
+                    </div>
+
+                    <div className="space-y-3">
+                        <Button
+                            variant="outline"
+                            className="h-11 w-full rounded-lg"
+                            onClick={() =>
+                                signIn("google", {
+                                    callbackUrl: "/subscriptions",
+                                })
+                            }
+                        >
+                            Continue with Google
+                        </Button>
 
                         <Button
-                            type="submit"
-                            className="w-full"
-                            disabled={loading}
+                            variant="outline"
+                            className="h-11 w-full rounded-lg"
+                            onClick={() =>
+                                signIn("github", {
+                                    callbackUrl: "/subscriptions",
+                                })
+                            }
                         >
-                            {loading ? "Logging in..." : "Login"}
+                            Continue with GitHub
                         </Button>
-                    </form>
-                </Form>
+                    </div>
 
-                <div className="my-6 flex items-center gap-3">
-                    <div className="h-px flex-1 bg-border" />
-                    <span className="text-sm text-muted-foreground">OR</span>
-                    <div className="h-px flex-1 bg-border" />
-                </div>
+                    <div className="mt-8 border-t border-zinc-200 pt-6 text-center">
+                        <p className="text-sm text-zinc-500">
+                            Don't have an account?
+                        </p>
 
-                <div className="space-y-3">
-                    <Button
-                        variant="outline"
-                        className="w-full"
-                        onClick={() =>
-                            signIn("google", { callbackUrl: "/dashboard" })
-                        }
-                    >
-                        Continue with Google
-                    </Button>
-
-                    <Button
-                        variant="outline"
-                        className="w-full"
-                        onClick={() =>
-                            signIn("github", { callbackUrl: "/dashboard" })
-                        }
-                    >
-                        Continue with GitHub
-                    </Button>
-
-                    <Button
-                        onClick={() =>
-                            signOut({
-                                callbackUrl: "/login",
-                            })
-                        }
-                    >
-                        Logout
-                    </Button>
+                        <Button
+                            variant="ghost"
+                            className="mt-2 w-full rounded-lg"
+                        >
+                            <Link href="/signUp">Create Account</Link>
+                        </Button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -110,197 +110,233 @@ export default function SignupPage() {
     }
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-slate-950 px-4">
-            <div className="w-full max-w-md rounded-xl border border-slate-800 bg-slate-900 p-8 shadow-xl">
-                <div className="mb-8 text-center">
-                    <h1 className="text-3xl font-bold text-white">SpendLens</h1>
+        <div className="min-h-screen bg-lime-100 py-12">
+            <div className="mx-auto flex min-h-[calc(100vh-6rem)] max-w-2xl items-center px-5">
+                <div className="w-full rounded-2xl bg-white p-8 shadow-2xl">
+                    <div className="mb-8 text-center">
+                        <h1 className="text-3xl font-bold text-zinc-900">
+                            Create Account
+                        </h1>
 
-                    <p className="mt-2 text-slate-400">Create your account</p>
-                </div>
+                        <p className="mt-2 text-sm text-zinc-500">
+                            Join SpendLens and start tracking your
+                            subscriptions.
+                        </p>
+                    </div>
 
-                <Form {...form}>
-                    <form className="space-y-5">
-                        <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="text-white">
-                                        Full Name
-                                    </FormLabel>
+                    <Form {...form}>
+                        <form className="space-y-5">
+                            <FormField
+                                control={form.control}
+                                name="name"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Full Name</FormLabel>
 
-                                    <FormControl>
-                                        <Input
-                                            placeholder="John Doe"
-                                            {...field}
-                                        />
-                                    </FormControl>
+                                        <FormControl>
+                                            <Input
+                                                {...field}
+                                                placeholder="John Doe"
+                                                className="
+        h-11 rounded-lg border-zinc-300 focus-visible:ring-1 focus-visible:ring-zinc-400
+        focus-visible:border-zinc-400 aria-invalid:ring-0 aria-invalid:border-red-400"
+                                            />
+                                        </FormControl>
 
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
 
-                        <FormField
-                            control={form.control}
-                            name="username"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="text-white">
-                                        Email
-                                    </FormLabel>
+                            <FormField
+                                control={form.control}
+                                name="username"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Email Address</FormLabel>
 
-                                    <FormControl>
-                                        <Input
-                                            type="email"
-                                            placeholder="john@example.com"
-                                            {...field}
-                                        />
-                                    </FormControl>
+                                        <FormControl>
+                                            <Input
+                                                type="email"
+                                                {...field}
+                                                placeholder="john@example.com"
+                                                className="
+        h-11 rounded-lg border-zinc-300 focus-visible:ring-1 focus-visible:ring-zinc-400
+        focus-visible:border-zinc-400 aria-invalid:ring-0 aria-invalid:border-red-400"
+                                            />
+                                        </FormControl>
 
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
 
-                        <FormField
-                            control={form.control}
-                            name="password"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="text-white">
-                                        Password
-                                    </FormLabel>
+                            <div className="grid gap-5 md:grid-cols-2">
+                                <FormField
+                                    control={form.control}
+                                    name="password"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Password</FormLabel>
 
-                                    <FormControl>
-                                        <Input
-                                            type="password"
-                                            placeholder="********"
-                                            {...field}
-                                        />
-                                    </FormControl>
+                                            <FormControl>
+                                                <Input
+                                                    type="password"
+                                                    {...field}
+                                                    placeholder="********"
+                                                    className="
+        h-11 rounded-lg border-zinc-300 focus-visible:ring-1 focus-visible:ring-zinc-400
+        focus-visible:border-zinc-400 aria-invalid:ring-0 aria-invalid:border-red-400"
+                                                />
+                                            </FormControl>
 
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
 
-                        <FormField
-                            control={form.control}
-                            name="confirmPassword"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="text-white">
-                                        Confirm Password
-                                    </FormLabel>
+                                <FormField
+                                    control={form.control}
+                                    name="confirmPassword"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>
+                                                Confirm Password
+                                            </FormLabel>
 
-                                    <FormControl>
-                                        <Input
-                                            type="password"
-                                            placeholder="********"
-                                            {...field}
-                                        />
-                                    </FormControl>
+                                            <FormControl>
+                                                <Input
+                                                    type="password"
+                                                    {...field}
+                                                    placeholder="********"
+                                                    className="
+        h-11 rounded-lg border-zinc-300 focus-visible:ring-1 focus-visible:ring-zinc-400
+        focus-visible:border-zinc-400 aria-invalid:ring-0 aria-invalid:border-red-400"
+                                                />
+                                            </FormControl>
 
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <FormField
-                            control={form.control}
-                            name="otp"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="text-white">
-                                        OTP
-                                    </FormLabel>
-
-                                    <FormControl>
-                                        <Input
-                                            placeholder="Enter OTP"
-                                            maxLength={6}
-                                            disabled={!otpSent}
-                                            {...field}
-                                        />
-                                    </FormControl>
-
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        {error && (
-                            <p className="text-center text-sm text-red-500">
-                                {error}
-                            </p>
-                        )}
-
-                        {success && (
-                            <p className="text-center text-sm text-green-500">
-                                {success}
-                            </p>
-                        )}
-
-                        <div className="space-y-3">
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
                             <Button
                                 type="button"
-                                className="w-full"
+                                className="h-11 w-fit rounded-lg px-8 py-6 bg-zinc-600 text-white"
                                 disabled={loadingOtp}
                                 onClick={() => sendOtp(form.watch("username"))}
                             >
-                                {loadingOtp ? "Sending OTP..." : "Send OTP"}
+                                {loadingOtp
+                                    ? "Sending OTP..."
+                                    : otpSent
+                                      ? "Resend OTP ->"
+                                      : "Send OTP ->"}
                             </Button>
 
-                            <Button
-                                type="button"
-                                className="w-full"
-                                disabled={!otpSent || loadingSignup}
-                                onClick={form.handleSubmit(signup)}
-                            >
-                                {loadingSignup
-                                    ? "Creating Account..."
-                                    : "Sign Up"}
-                            </Button>
-                        </div>
-                    </form>
-                </Form>
+                            {otpSent && (
+                                <FormField
+                                    control={form.control}
+                                    name="otp"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>
+                                                Email Verification Code
+                                            </FormLabel>
 
-                <div className="my-6 flex items-center">
-                    <div className="h-px flex-1 bg-slate-700" />
-                    <span className="mx-4 text-sm text-slate-400">OR</span>
-                    <div className="h-px flex-1 bg-slate-700" />
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    maxLength={6}
+                                                    placeholder="123456"
+                                                    disabled={!otpSent}
+                                                    className="
+        h-11 rounded-lg border-zinc-300 focus-visible:ring-1 focus-visible:ring-zinc-400
+        focus-visible:border-zinc-400 aria-invalid:ring-0 aria-invalid:border-red-400"
+                                                />
+                                            </FormControl>
+
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            )}
+
+                            {error && (
+                                <div className="rounded-lg border border-red-200 bg-red-50 p-3">
+                                    <p className="text-sm text-red-600">
+                                        {error}
+                                    </p>
+                                </div>
+                            )}
+
+                            {success && (
+                                <div className="rounded-lg border border-green-200 bg-green-50 p-3">
+                                    <p className="text-sm text-green-700">
+                                        {success}
+                                    </p>
+                                </div>
+                            )}
+
+                            {otpSent && (
+                                <div className="space-y-3 pt-2">
+                                    <Button
+                                        type="button"
+                                        disabled={loadingSignup}
+                                        onClick={form.handleSubmit(signup)}
+                                        className="h-11 w-full rounded-lg bg-zinc-800 text-white"
+                                    >
+                                        {loadingSignup
+                                            ? "Creating Account..."
+                                            : "Create Account"}
+                                    </Button>
+                                </div>
+                            )}
+                        </form>
+                    </Form>
+
+                    <div className="my-8 flex items-center gap-4">
+                        <div className="h-px flex-1 bg-zinc-200" />
+
+                        <span className="text-xs uppercase tracking-wider text-zinc-400">
+                            Or continue with
+                        </span>
+
+                        <div className="h-px flex-1 bg-zinc-200" />
+                    </div>
+
+                    <div className="space-y-3">
+                        <Button
+                            variant="outline"
+                            type="button"
+                            className="h-11 w-full rounded-lg"
+                            onClick={() => signIn("google")}
+                        >
+                            Continue with Google
+                        </Button>
+
+                        <Button
+                            variant="outline"
+                            type="button"
+                            className="h-11 w-full rounded-lg"
+                            onClick={() => signIn("github")}
+                        >
+                            Continue with GitHub
+                        </Button>
+                    </div>
+
+                    <div className="mt-8 border-t border-zinc-200 pt-6 text-center">
+                        <p className="text-sm text-zinc-500">
+                            Already have an account?
+                        </p>
+
+                        <Button
+                            variant="ghost"
+                            className="mt-2 w-full rounded-lg"
+                        >
+                            <Link href="/login">Sign In</Link>
+                        </Button>
+                    </div>
                 </div>
-
-                <div className="space-y-3">
-                    <Button
-                        type="button"
-                        variant="outline"
-                        className="w-full"
-                        onClick={() => signIn("google")}
-                    >
-                        Continue with Google
-                    </Button>
-
-                    <Button
-                        type="button"
-                        variant="outline"
-                        className="w-full"
-                        onClick={() => signIn("github")}
-                    >
-                        Continue with GitHub
-                    </Button>
-                </div>
-
-                <p className="mt-6 text-center text-sm text-slate-400">
-                    Already have an account?{" "}
-                    <Link
-                        href="/login"
-                        className="font-medium text-blue-500 hover:underline"
-                    >
-                        Sign In
-                    </Link>
-                </p>
             </div>
         </div>
     );

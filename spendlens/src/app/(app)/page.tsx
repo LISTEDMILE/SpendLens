@@ -130,42 +130,50 @@ export default function HomePage() {
 
     return (
         <main className="overflow-hidden bg-black text-white">
-            <div className="blob1 fixed left-[-250px] top-[-150px] h-[500px] w-[500px] rounded-full bg-cyan-500/20 blur-[140px]" />
-            <div className="blob2 fixed right-[-200px] top-[250px] h-[450px] w-[450px] rounded-full bg-violet-600/20 blur-[150px]" />
-            <div className="blob3 fixed bottom-[-200px] left-1/2 h-[450px] w-[450px] rounded-full bg-blue-600/20 blur-[170px]" />
-            {/* HERO */}
+            {/* Background */}
+            <div className="blob1 fixed -left-24 -top-24 h-64 w-64 rounded-full bg-cyan-500/20 blur-[120px] lg:-left-40 lg:-top-40 lg:h-[420px] lg:w-[420px]" />
+
+            <div className="blob2 fixed -right-24 top-1/3 h-72 w-72 rounded-full bg-violet-500/20 blur-[140px] lg:h-[450px] lg:w-[450px]" />
+
+            <div className="blob3 fixed bottom-0 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-blue-500/20 blur-[150px] lg:h-[420px] lg:w-[420px]" />
+
+            {/* ================= HERO ================= */}
+
             <section
                 ref={heroRef}
-                className="relative mx-auto flex min-h-screen max-w-7xl items-center justify-between px-8"
+                className="relative mx-auto flex min-h-screen max-w-7xl flex-col justify-center gap-16 px-6 py-24 sm:py-0 lg:flex-row lg:items-center lg:justify-between lg:px-8"
             >
-                <div ref={headingRef} className="flex max-w-2xl flex-col">
-                    <span className="hero-text mb-6 flex w-fit items-center gap-2 rounded-full border border-cyan-500/40 bg-cyan-500/10 px-5 py-2 text-sm">
-                        <Sparkles size={16} />
+                {/* LEFT */}
+
+                <div ref={headingRef} className="z-10 flex max-w-2xl flex-col">
+                    <span className="hero-text mb-6 flex w-fit items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-4 py-2 text-xs font-medium text-cyan-300 sm:text-sm">
+                        <Sparkles size={15} />
                         Smart Subscription Tracking
                     </span>
 
-                    <h1 className="flex flex-col text-7xl font-black leading-none tracking-tight">
-                        <span className="hero-line">Never</span>
+                    <h1 className="flex flex-col font-black leading-none tracking-tight">
+                        <span className="hero-line text-5xl sm:text-6xl lg:text-7xl">
+                            Never
+                        </span>
 
-                        <span className="hero-line">Forget</span>
+                        <span className="hero-line text-5xl sm:text-6xl lg:text-7xl">
+                            Forget
+                        </span>
 
-                        <span className="hero-line text-cyan-400">
+                        <span className="hero-line text-5xl text-cyan-400 sm:text-6xl lg:text-7xl">
                             A Renewal.
                         </span>
                     </h1>
 
-                    <p className="hero-text mt-8 max-w-xl text-lg leading-8 text-zinc-400">
-                        Track every subscription, monitor your monthly expenses,
-                        receive renewal reminders, and finally stop paying for
-                        services you've forgotten about.
+                    <p className="hero-text mt-8 max-w-xl text-base leading-8 text-zinc-400 sm:text-lg">
+                        Track every subscription, receive renewal reminders,
+                        monitor monthly expenses and stop paying for services
+                        you've forgotten.
                     </p>
 
-                    <div className="hero-btn mt-10 flex gap-5">
-                        <Button
-                            size="lg"
-                            className="h-14 rounded-full px-8 text-base"
-                        >
-                            <Link href="/login">
+                    <div className="hero-btn mt-10 flex flex-col gap-4 sm:flex-row">
+                        <Button size="lg" className="h-14 rounded-full px-8">
+                            <Link href="/login" className="flex items-center">
                                 Get Started
                                 <ArrowRight className="ml-2 h-5 w-5" />
                             </Link>
@@ -173,139 +181,152 @@ export default function HomePage() {
                     </div>
                 </div>
 
-                <div className="relative flex w-[500px] flex-col items-center justify-center">
+                {/* RIGHT */}
+
+                <div className="relative flex w-full max-w-md flex-col gap-5 lg:h-[650px] lg:max-w-xl">
+                    {/* CARD 1 */}
+
                     <div
                         ref={card1}
-                        className="absolute left-0 top-0 flex w-72 flex-col rounded-3xl border border-zinc-800 bg-zinc-950/80 p-6 backdrop-blur-xl"
+                        className="w-full rounded-3xl border border-zinc-800 bg-zinc-950/80 p-6 backdrop-blur-xl lg:absolute lg:left-0 lg:top-0 lg:w-72"
                     >
                         <div className="mb-5 flex items-center justify-between">
                             <CreditCard />
+
                             <span className="rounded-full bg-green-500/20 px-3 py-1 text-xs text-green-400">
                                 Active
                             </span>
                         </div>
 
-                        <h2 className="text-2xl font-bold">Netflix</h2>
+                        <h2 className="text-xl font-bold">Netflix</h2>
 
                         <p className="mt-2 text-zinc-400">₹649 / month</p>
 
-                        <div className="mt-6 flex items-center gap-2 text-sm text-cyan-400">
-                            <Bell size={16} />
+                        <div className="mt-5 flex items-center gap-2 text-sm text-cyan-400">
+                            <Bell size={15} />
                             Tomorrow
                         </div>
                     </div>
 
+                    {/* CARD 2 */}
+
                     <div
                         ref={card2}
-                        className="absolute right-0 top-48 flex w-72 flex-col rounded-3xl border border-zinc-800 bg-zinc-950/80 p-6 backdrop-blur-xl"
+                        className="w-full rounded-3xl border border-zinc-800 bg-zinc-950/80 p-6 backdrop-blur-xl lg:absolute lg:right-0 lg:top-44 lg:w-72"
                     >
                         <div className="mb-5 flex items-center justify-between">
                             <Wallet />
+
                             <span className="rounded-full bg-blue-500/20 px-3 py-1 text-xs text-blue-400">
                                 Paid
                             </span>
                         </div>
 
-                        <h2 className="text-2xl font-bold">Spotify</h2>
+                        <h2 className="text-xl font-bold">Spotify</h2>
 
                         <p className="mt-2 text-zinc-400">₹119 / month</p>
 
-                        <div className="mt-6 flex items-center gap-2 text-sm text-green-400">
+                        <div className="mt-5 text-sm text-green-400">
                             Auto Debit Enabled
                         </div>
                     </div>
 
+                    {/* CARD 3 */}
+
                     <div
                         ref={card3}
-                        className="absolute right-10 bottom-[-160px] flex w-72 flex-col rounded-3xl border border-zinc-800 bg-zinc-950/80 p-6 backdrop-blur-xl"
+                        className="w-full rounded-3xl border border-zinc-800 bg-zinc-950/80 p-6 backdrop-blur-xl lg:absolute lg:bottom-0 lg:right-8 lg:w-72"
                     >
                         <div className="mb-5 flex items-center justify-between">
                             <BarChart3 />
+
                             <span className="rounded-full bg-violet-500/20 px-3 py-1 text-xs text-violet-400">
                                 Analytics
                             </span>
                         </div>
 
-                        <h2 className="text-2xl font-bold">Monthly Spend</h2>
+                        <h2 className="text-xl font-bold">Monthly Spend</h2>
 
-                        <p className="mt-3 text-5xl font-black text-cyan-400">
+                        <p className="mt-3 text-4xl font-black text-cyan-400">
                             ₹4,259
                         </p>
 
-                        <p className="mt-4 text-sm text-zinc-400">
+                        <p className="mt-3 text-sm text-zinc-400">
                             +12% this month
                         </p>
                     </div>
                 </div>
-            </section>{" "}
-            {/* STATS */}
+            </section>
+
+            {/* ================= STATS ================= */}
+
             <section
                 ref={statsRef}
-                className="mx-auto flex max-w-7xl flex-col items-center gap-10 px-8 py-28"
+                className="mx-auto max-w-7xl px-6 py-20 lg:px-8 lg:py-28"
             >
-                <h2 className="text-center text-4xl font-bold">
+                <h2 className="text-center text-3xl font-bold sm:text-4xl">
                     Thousands of renewals tracked.
                 </h2>
 
-                <div className="flex w-full items-center justify-center gap-10">
-                    <div className="stat flex w-72 flex-col rounded-3xl border border-zinc-800 bg-zinc-950 p-8">
-                        <span className="text-6xl font-black text-cyan-400">
+                <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    <div className="stat rounded-3xl border border-zinc-800 bg-zinc-950 p-8">
+                        <span className="text-5xl font-black text-cyan-400">
                             --
                         </span>
 
-                        <span className="mt-4 text-zinc-400">
+                        <p className="mt-4 text-zinc-400">
                             Active subscriptions managed
-                        </span>
+                        </p>
                     </div>
 
-                    <div className="stat flex w-72 flex-col rounded-3xl border border-zinc-800 bg-zinc-950 p-8">
-                        <span className="text-6xl font-black text-violet-400">
+                    <div className="stat rounded-3xl border border-zinc-800 bg-zinc-950 p-8">
+                        <span className="text-5xl font-black text-violet-400">
                             --
                         </span>
 
-                        <span className="mt-4 text-zinc-400">
-                            Expenses tracked
-                        </span>
+                        <p className="mt-4 text-zinc-400">Expenses tracked</p>
                     </div>
 
-                    <div className="stat flex w-72 flex-col rounded-3xl border border-zinc-800 bg-zinc-950 p-8">
-                        <span className="text-6xl font-black text-blue-400">
+                    <div className="stat rounded-3xl border border-zinc-800 bg-zinc-950 p-8 sm:col-span-2 lg:col-span-1">
+                        <span className="text-5xl font-black text-blue-400">
                             --
                         </span>
 
-                        <span className="mt-4 text-zinc-400">
+                        <p className="mt-4 text-zinc-400">
                             Renewal reminders delivered
-                        </span>
+                        </p>
                     </div>
                 </div>
             </section>
-            {/* FEATURES */}
+
+            {/* ================= FEATURES ================= */}
+
             <section
                 ref={featuresRef}
-                className="mx-auto flex max-w-7xl flex-col gap-40 px-8 py-20"
+                className="mx-auto flex max-w-7xl flex-col gap-24 px-6 py-20 lg:gap-32 lg:px-8"
             >
                 {/* Feature 1 */}
 
-                <div className="feature flex items-center justify-between gap-20">
-                    <div className="flex w-[520px] flex-col">
-                        <span className="mb-5 text-cyan-400">
+                <div className="feature grid items-center gap-12 lg:grid-cols-2">
+                    <div className="max-w-xl">
+                        <span className="mb-8 sm:mb-4 inline-block text-sm font-semibold tracking-widest text-cyan-400 w-full sm:w-fit text-center sm:text-left">
                             SMART REMINDERS
                         </span>
 
-                        <h2 className="text-5xl font-black leading-tight">
+                        <h2 className="text-4xl font-black leading-tight sm:text-5xl">
                             Never miss
                             <br />
                             another renewal.
                         </h2>
 
-                        <p className="mt-8 text-lg leading-8 text-zinc-400">
-                            SpendLens automatically reminds you before your
-                            subscriptions renew so you always stay in control of
-                            your money.
+                        <p className="mt-6 text-base leading-8 text-zinc-400 sm:text-lg">
+                            SpendLens reminds you before subscriptions renew,
+                            helping you avoid unwanted charges and giving you
+                            complete control over recurring payments.
                         </p>
                     </div>
 
-                    <div className="flex w-[500px] flex-col rounded-[35px] border border-zinc-800 bg-zinc-950 p-10">
+                    <div className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6 sm:p-8">
                         <div className="flex items-center justify-between">
                             <h3 className="text-xl font-semibold">
                                 Upcoming Renewals
@@ -314,41 +335,75 @@ export default function HomePage() {
                             <Bell className="text-cyan-400" />
                         </div>
 
-                        <div className="mt-10 flex flex-col gap-5">
-                            <div className="flex items-center justify-between rounded-2xl bg-zinc-900 p-5">
-                                <div>
-                                    <p className="font-semibold">Netflix</p>
+                        <div className="mt-8 space-y-4">
+                            {[
+                                {
+                                    name: "Netflix",
+                                    date: "Tomorrow",
+                                    price: "₹649",
+                                },
+                                {
+                                    name: "Spotify",
+                                    date: "3 Days",
+                                    price: "₹119",
+                                },
+                                {
+                                    name: "Prime Video",
+                                    date: "Next Week",
+                                    price: "₹299",
+                                },
+                            ].map((item) => (
+                                <div
+                                    key={item.name}
+                                    className="flex items-center justify-between rounded-2xl bg-zinc-900 p-4"
+                                >
+                                    <div>
+                                        <p className="font-medium">
+                                            {item.name}
+                                        </p>
 
-                                    <p className="text-sm text-zinc-500">
-                                        Tomorrow
-                                    </p>
+                                        <p className="text-sm text-zinc-500">
+                                            {item.date}
+                                        </p>
+                                    </div>
+
+                                    <span className="font-semibold text-cyan-400">
+                                        {item.price}
+                                    </span>
                                 </div>
-
-                                <span className="text-cyan-400">₹649</span>
-                            </div>
-
-                            <div className="flex items-center justify-between rounded-2xl bg-zinc-900 p-5">
-                                <div>
-                                    <p className="font-semibold">Spotify</p>
-
-                                    <p className="text-sm text-zinc-500">
-                                        3 Days
-                                    </p>
-                                </div>
-
-                                <span className="text-cyan-400">₹119</span>
-                            </div>
+                            ))}
                         </div>
                     </div>
                 </div>
 
                 {/* Feature 2 */}
 
-                <div className="feature flex flex-row-reverse items-center justify-between gap-20">
-                    <div className="flex w-[520px] flex-col">
-                        <span className="mb-5 text-violet-400">ANALYTICS</span>
+                <div className="feature grid items-center gap-12 lg:grid-cols-2">
+                    <div className="flex w-full sm:w-[520px] flex-col rounded-[35px] border border-zinc-800 bg-zinc-950 p-10">
+                        <div className="flex h-60 items-end justify-between w-full overflow-hidden">
+                            <div className="h-24 w-3 sm:w-10 rounded-full bg-cyan-500" />
+                            <div className="h-40 w-3 sm:w-10 rounded-full bg-cyan-500" />
 
-                        <h2 className="text-5xl font-black leading-tight">
+                            <div className="h-56 w-3 sm:w-10 rounded-full bg-cyan-500" />
+
+                            <div className="h-44 w-3 sm:w-10 rounded-full bg-cyan-500" />
+
+                            <div className="h-36 w-3 sm:w-10 rounded-full bg-cyan-500" />
+
+                            <div className="h-52 w-3 sm:w-10 rounded-full bg-cyan-500" />
+                        </div>
+
+                        <p className="mt-10 text-center text-zinc-500">
+                            Monthly spending trend
+                        </p>
+                    </div>
+
+                    <div className="order-1 max-w-xl lg:order-2">
+                        <span className="mb-8 sm:mb-4 w-full sm:w-fit text-center sm:text-left inline-block text-sm font-semibold tracking-widest text-violet-400">
+                            ANALYTICS
+                        </span>
+
+                        <h2 className="text-4xl font-black leading-tight sm:text-5xl">
                             Understand
                             <br />
                             where your
@@ -356,229 +411,252 @@ export default function HomePage() {
                             money goes.
                         </h2>
 
-                        <p className="mt-8 text-lg leading-8 text-zinc-400">
-                            Visualize recurring expenses, spending trends and
-                            monthly subscription costs with beautiful analytics.
-                        </p>
-                    </div>
-
-                    <div className="flex w-[520px] flex-col rounded-[35px] border border-zinc-800 bg-zinc-950 p-10">
-                        <div className="flex h-60 items-end justify-between">
-                            <div className="h-24 w-10 rounded-full bg-cyan-500" />
-
-                            <div className="h-40 w-10 rounded-full bg-cyan-500" />
-
-                            <div className="h-56 w-10 rounded-full bg-cyan-500" />
-
-                            <div className="h-44 w-10 rounded-full bg-cyan-500" />
-
-                            <div className="h-36 w-10 rounded-full bg-cyan-500" />
-
-                            <div className="h-52 w-10 rounded-full bg-cyan-500" />
-                        </div>
-
-                        <p className="mt-10 text-center text-zinc-500">
-                            Monthly spending trend
+                        <p className="mt-6 text-base leading-8 text-zinc-400 sm:text-lg">
+                            Visualize recurring expenses, identify spending
+                            patterns and understand exactly how much you're
+                            paying every month.
                         </p>
                     </div>
                 </div>
 
                 {/* Feature 3 */}
 
-                <div className="feature flex items-center justify-between gap-20">
-                    <div className="flex w-[520px] flex-col">
-                        <span className="mb-5 text-blue-400">
+                <div className="feature grid items-center gap-12 lg:grid-cols-2">
+                    <div className="max-w-xl">
+                        <span className="mb-8 sm:mb-4 w-full sm:w-fit text-center sm:text-left inline-block text-sm font-semibold tracking-widest text-blue-400">
                             EVERYTHING IN ONE PLACE
                         </span>
 
-                        <h2 className="text-5xl font-black leading-tight">
+                        <h2 className="text-4xl font-black leading-tight sm:text-5xl">
                             Every subscription.
                             <br />
                             One dashboard.
                         </h2>
 
-                        <p className="mt-8 text-lg leading-8 text-zinc-400">
-                            Netflix, Prime, Spotify, ChatGPT, Adobe, Apple,
-                            Microsoft... manage everything from a single elegant
-                            dashboard.
+                        <p className="mt-6 text-base leading-8 text-zinc-400 sm:text-lg">
+                            Keep Netflix, Spotify, ChatGPT, Prime, Adobe,
+                            Microsoft and every recurring subscription organized
+                            in one beautiful dashboard.
                         </p>
                     </div>
 
-                    <div className="flex w-[520px] flex-col gap-5 rounded-[35px] border border-zinc-800 bg-zinc-950 p-8">
+                    <div className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6 sm:p-8">
+                        <div className="space-y-4">
+                            {[
+                                "Netflix",
+                                "Spotify",
+                                "Prime Video",
+                                "ChatGPT Plus",
+                                "Adobe Creative Cloud",
+                            ].map((item) => (
+                                <div
+                                    key={item}
+                                    className="flex items-center justify-between rounded-2xl bg-zinc-900 p-4"
+                                >
+                                    <span className="font-medium">{item}</span>
+
+                                    <span className="rounded-full bg-green-500/20 px-3 py-1 text-xs font-medium text-green-400">
+                                        Active
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ================= ANALYTICS ================= */}
+
+            <section className="mx-auto max-w-7xl px-6 py-20 lg:px-8 lg:py-32">
+                <div className="flex flex-col items-center text-center">
+                    <span className="mb-5 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-4 py-2 text-xs font-semibold tracking-wider text-cyan-400">
+                        BEAUTIFUL ANALYTICS
+                    </span>
+
+                    <h2 className="max-w-4xl text-4xl font-black leading-tight sm:text-5xl lg:text-6xl">
+                        Know exactly
+                        <span className="text-cyan-400">
+                            {" "}
+                            where every rupee{" "}
+                        </span>
+                        goes every month.
+                    </h2>
+
+                    <p className="mt-6 max-w-3xl text-base leading-8 text-zinc-400 sm:text-lg">
+                        Gain powerful insights into your recurring expenses and
+                        discover opportunities to reduce unnecessary spending.
+                    </p>
+                </div>
+
+                <div className="mt-16 rounded-3xl border border-zinc-800 bg-zinc-950 p-6 lg:p-10">
+                    <div className="grid gap-10 lg:grid-cols-2">
+                        <div>
+                            <p className="text-sm text-zinc-500">
+                                Monthly Spend
+                            </p>
+
+                            <h3 className="mt-2 text-5xl font-black text-cyan-400">
+                                ₹4,259
+                            </h3>
+                        </div>
+
+                        <div className="text-left lg:text-right">
+                            <p className="text-sm text-zinc-500">
+                                Active Plans
+                            </p>
+
+                            <h3 className="mt-2 text-5xl font-black">12</h3>
+                        </div>
+                    </div>
+
+                    <div className="mt-14 flex h-64 items-end justify-between gap-3 rounded-3xl border border-zinc-800 bg-zinc-900 p-4 sm:p-6">
                         {[
-                            "Netflix",
-                            "Spotify",
-                            "Prime Video",
-                            "ChatGPT Plus",
-                            "Adobe",
+                            { month: "Jan", value: 35 },
+                            { month: "Feb", value: 55 },
+                            { month: "Mar", value: 80 },
+                            { month: "Apr", value: 62 },
+                            { month: "May", value: 45 },
+                            { month: "Jun", value: 70 },
+                            { month: "Jul", value: 90 },
                         ].map((item) => (
                             <div
-                                key={item}
-                                className="flex items-center justify-between rounded-2xl bg-zinc-900 p-5"
+                                key={item.month}
+                                className="flex flex-1 flex-col items-center justify-end gap-3"
                             >
-                                <span>{item}</span>
+                                <span className="hidden text-xs text-cyan-400 sm:block">
+                                    ₹{item.value * 50}
+                                </span>
 
-                                <span className="rounded-full bg-green-500/20 px-3 py-1 text-sm text-green-400">
-                                    Active
+                                <div className="flex h-44 items-end">
+                                    <div
+                                        style={{
+                                            height: `${item.value}%`,
+                                        }}
+                                        className="analytics-bar w-5 rounded-full bg-gradient-to-t from-cyan-500 via-blue-500 to-violet-500 transition-all duration-300 hover:scale-110 sm:w-8 lg:w-10"
+                                    />
+                                </div>
+
+                                <span className="text-xs text-zinc-500">
+                                    {item.month}
                                 </span>
                             </div>
                         ))}
                     </div>
                 </div>
-            </section>{" "}
-            {/* ANALYTICS SHOWCASE */}
-            <section className="mx-auto flex max-w-7xl flex-col items-center px-8 py-32">
-                <span className="mb-6 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-5 py-2 text-sm text-cyan-400">
-                    BEAUTIFUL ANALYTICS
-                </span>
+            </section>
 
-                <h2 className="max-w-4xl text-center text-6xl font-black leading-tight">
-                    Know exactly
-                    <span className="text-cyan-400"> where every rupee </span>
-                    goes every month.
-                </h2>
+            {/* ================= TIMELINE ================= */}
 
-                <p className="mt-8 max-w-3xl text-center text-xl leading-9 text-zinc-400">
-                    Powerful insights that help you reduce unnecessary
-                    subscriptions and understand your recurring expenses.
-                </p>
+            <section className="mx-auto max-w-6xl px-6 py-20 lg:px-8 lg:py-32">
+                <div className="text-center">
+                    <h2 className="text-4xl font-black sm:text-5xl lg:text-6xl">
+                        Your subscription
+                        <span className="text-violet-400"> journey.</span>
+                    </h2>
 
-                <div className="mt-20 flex w-full items-center justify-center">
-                    <div className="flex w-full max-w-6xl rounded-[40px] border border-zinc-800 bg-zinc-950/80 p-10 backdrop-blur-xl">
-                        <div className="flex w-full flex-col gap-10">
-                            <div className="flex justify-between">
-                                <div className="flex flex-col">
-                                    <span className="text-zinc-500">
-                                        Monthly Spend
-                                    </span>
+                    <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-zinc-400 sm:text-lg">
+                        SpendLens helps you stay on top of every recurring
+                        payment in just a few simple steps.
+                    </p>
+                </div>
 
-                                    <span className="mt-2 text-6xl font-black text-cyan-400">
-                                        ₹4,259
-                                    </span>
+                <div className="relative mt-16">
+                    <div className="absolute left-6 top-0 hidden h-full w-px bg-zinc-800 md:block" />
+
+                    <div className="space-y-10">
+                        {[
+                            {
+                                title: "Add Subscription",
+                                text: "Add Netflix, Spotify, Prime, ChatGPT or any recurring service.",
+                            },
+                            {
+                                title: "Receive Smart Reminders",
+                                text: "Get notified before every renewal so you stay in control.",
+                            },
+                            {
+                                title: "Track Monthly Spending",
+                                text: "Visualize your recurring expenses with simple analytics.",
+                            },
+                            {
+                                title: "Save More Money",
+                                text: "Cancel subscriptions you no longer use and reduce waste.",
+                            },
+                        ].map((step, index) => (
+                            <div
+                                key={step.title}
+                                className="relative flex gap-6 rounded-2xl border border-zinc-800 bg-zinc-950 p-6 transition-colors hover:border-zinc-700"
+                            >
+                                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-cyan-500 text-lg font-bold text-black lg:h-14 lg:w-14">
+                                    {index + 1}
                                 </div>
 
-                                <div className="flex flex-col text-right">
-                                    <span className="text-zinc-500">
-                                        Active Plans
-                                    </span>
+                                <div>
+                                    <h3 className="text-xl font-bold lg:text-2xl">
+                                        {step.title}
+                                    </h3>
 
-                                    <span className="mt-2 text-6xl font-black">
-                                        12
-                                    </span>
+                                    <p className="mt-2 text-sm leading-7 text-zinc-400 sm:text-base">
+                                        {step.text}
+                                    </p>
                                 </div>
                             </div>
-
-                            <div className="mt-12 flex h-72 items-end justify-between rounded-3xl border border-zinc-800 bg-zinc-900/50 p-8">
-                                {[
-                                    { month: "Jan", value: 35 },
-                                    { month: "Feb", value: 55 },
-                                    { month: "Mar", value: 80 },
-                                    { month: "Apr", value: 62 },
-                                    { month: "May", value: 45 },
-                                    { month: "Jun", value: 70 },
-                                    { month: "Jul", value: 90 },
-                                ].map((item) => (
-                                    <div
-                                        key={item.month}
-                                        className="flex flex-col items-center gap-3"
-                                    >
-                                        <span className="text-sm font-medium text-cyan-400">
-                                            ₹{item.value * 50}
-                                        </span>
-
-                                        <div className="flex h-52 items-end">
-                                            <div
-                                                style={{
-                                                    height: `${item.value}%`,
-                                                }}
-                                                className="analytics-bar w-10 rounded-full bg-gradient-to-t from-cyan-500 via-blue-500 to-violet-500 shadow-[0_0_25px_rgba(34,211,238,.35)] transition-all duration-300 hover:scale-110"
-                                            />
-                                        </div>
-
-                                        <span className="text-xs text-zinc-500">
-                                            {item.month}
-                                        </span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </section>
-            {/* TIMELINE */}
-            <section className="mx-auto flex max-w-6xl flex-col items-center px-8 py-32">
-                <h2 className="text-center text-6xl font-black">
-                    Your subscription
-                    <span className="text-violet-400"> journey.</span>
-                </h2>
 
-                <div className="mt-24 flex w-full flex-col gap-12">
-                    {[
-                        {
-                            title: "Add Subscription",
-                            text: "Track every service in less than a minute.",
-                        },
-                        {
-                            title: "Receive Reminders",
-                            text: "Get notified before auto-renewals happen.",
-                        },
-                        {
-                            title: "Monitor Spending",
-                            text: "Understand where your money is going.",
-                        },
-                        {
-                            title: "Save More",
-                            text: "Cancel subscriptions you don't need.",
-                        },
-                    ].map((step, index) => (
-                        <div
-                            key={step.title}
-                            className="flex items-center gap-10"
-                        >
-                            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-cyan-500 text-2xl font-bold text-black">
-                                {index + 1}
-                            </div>
+            {/* ================= CTA ================= */}
 
-                            <div className="flex flex-col">
-                                <h3 className="text-3xl font-bold">
-                                    {step.title}
-                                </h3>
+            <section className="mx-auto max-w-7xl px-6 py-20 lg:px-8 lg:py-32">
+                <div className="relative overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-950 px-8 py-16 text-center lg:px-16 lg:py-24">
+                    {/* Background Glow */}
 
-                                <p className="mt-2 text-zinc-400">
-                                    {step.text}
-                                </p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </section>
-            {/* CTA */}
-            <section className="mx-auto flex max-w-7xl flex-col items-center px-8 py-40">
-                <div className="relative flex w-full flex-col items-center overflow-hidden rounded-[50px] border border-zinc-800 bg-zinc-950 p-24">
-                    <div className="absolute left-1/2 top-0 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-cyan-500/10 blur-[140px]" />
+                    <div className="absolute left-1/2 top-0 h-72 w-72 -translate-x-1/2 rounded-full bg-cyan-500/10 blur-[120px]" />
 
-                    <h2 className="relative max-w-4xl text-center text-7xl font-black leading-tight">
-                        Stop wasting money
-                        <br />
-                        on forgotten
-                        <span className="text-cyan-400"> subscriptions.</span>
-                    </h2>
+                    <div className="relative z-10">
+                        <span className="rounded-full border border-cyan-500/30 bg-cyan-500/10 px-4 py-2 text-xs font-semibold tracking-wider text-cyan-400">
+                            START TODAY
+                        </span>
 
-                    <p className="relative mt-8 max-w-2xl text-center text-xl leading-9 text-zinc-400">
-                        Join thousands of users taking control of recurring
-                        payments with SpendLens.
-                    </p>
+                        <h2 className="mx-auto mt-8 max-w-4xl text-4xl font-black leading-tight sm:text-5xl lg:text-6xl text-left sm:text-center">
+                            Stop paying for
+                            <span className="text-cyan-400">
+                                {" "}
+                                forgotten subscriptions
+                            </span>
+                        </h2>
 
-                    <div className="relative mt-12 flex gap-6">
-                        <Button
-                            size="lg"
-                            className="h-16 rounded-full px-10 text-lg"
-                        >
-                            <Link href="/login">
-                                Start For Free
-                                <ArrowRight className="ml-2 h-5 w-5" />
+                        <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-zinc-400 sm:text-lg">
+                            Keep every recurring payment organized, receive
+                            timely renewal reminders, and gain complete
+                            visibility into your monthly spending—all from one
+                            simple dashboard.
+                        </p>
+
+                        <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+                            <Button
+                                size="lg"
+                                className="h-14 w-full rounded-full px-8 sm:w-auto"
+                            >
+                                <Link
+                                    href="/login"
+                                    className="flex items-center"
+                                >
+                                    Get Started
+                                    <ArrowRight className="ml-2 h-5 w-5" />
+                                </Link>
+                            </Button>
+
+                            <Link href="/signUp">
+                                <Button
+                                    size="lg"
+                                    variant="outline"
+                                    className="h-14 w-full rounded-lg px-8 py-4 border-zinc-700 bg-transparent text-white hover:bg-zinc-900 sm:w-auto"
+                                >
+                                    Create Account
+                                </Button>
                             </Link>
-                        </Button>
+                        </div>
                     </div>
                 </div>
             </section>

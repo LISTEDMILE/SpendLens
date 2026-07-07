@@ -7,7 +7,6 @@ export async function SendOtp(
     otp: string,
 ): Promise<ApiResponse> {
     try {
-        console.log(username, otp);
         const { data, error } = await resend.emails.send({
             from: "onboarding@resend.dev",
             to: username,

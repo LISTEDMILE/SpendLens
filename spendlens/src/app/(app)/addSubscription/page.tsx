@@ -137,7 +137,7 @@ export default function AddSubscriptionPage() {
 
     return (
         <div className="w-screen min-h-screen bg-lime-100">
-            <div className="mx-auto max-w-2xl  p-6">
+            <div className="mx-auto max-w-4xl  p-6">
                 <div className="rounded-xl border bg-background p-8 bg-white shadow-lg">
                     <h1 className="mb-8 text-3xl font-bold">
                         {isEdit ? "Edit Subscription" : "Add Subscription"}

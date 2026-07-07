@@ -229,14 +229,6 @@ aria-invalid:border-red-400
             {showDeleteDialog && (
                 <div className="fixed w-screen h-screen bg-black/40 inset-0 flex justify-center items-center ">
                     <div className="bg-white px-8 py-8 rounded-lg flex flex-col gap-10 items-start">
-                        <Button
-                            onClick={() => setShowDeleteDialog(false)}
-                            variant="destructive"
-                            size="sm"
-                            className={"border-1 border-black p-4"}
-                        >
-                            X
-                        </Button>
                         <h1>
                             Are you sure want to delete your account <br /> This
                             can't be undone
