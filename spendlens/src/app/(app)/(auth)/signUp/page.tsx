@@ -333,7 +333,7 @@ export default function SignupPage() {
                             variant="ghost"
                             className="mt-2 w-full rounded-lg"
                         >
-                            <Link href="/login">Sign In</Link>
+                            <Link href="/login" className="underline">{"Sign In ->"}</Link>
                         </Button>
                     </div>
                 </div>

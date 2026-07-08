@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -213,7 +213,7 @@ useEffect(() => {
                             variant="ghost"
                             className="mt-2 w-full rounded-lg"
                         >
-                            <Link href="/signUp">Create Account</Link>
+                            <Link href="/signUp" className="underline">{"Create Account ->"}</Link>
                         </Button>
                     </div>
                 </div>

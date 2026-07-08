@@ -26,10 +26,17 @@ import { toast } from "sonner";
 export default function AddSubscriptionPage() {
     const [loading, setLoading] = useState(false);
 
-    const searchParams = useSearchParams();
+    const [mode, setMode] = useState<string | null>(null);
+const [id, setId] = useState<string | null>(null);
 
-    const mode = searchParams.get("mode");
-    const id = searchParams.get("id");
+useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+
+    setMode(params.get("mode"));
+    setId(params.get("id"));
+}, []);
+
+
 
     const isEdit = mode === "edit";
 
