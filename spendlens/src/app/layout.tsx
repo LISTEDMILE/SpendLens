@@ -1,10 +1,24 @@
+import type { Metadata } from "next";
 import SessionWrapper from "@/components/SessionWrapper";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 import "@/app/globals.css";
 import { Toaster } from "sonner";
 
-const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
+const geist = Geist({
+    subsets: ["latin"],
+    variable: "--font-sans",
+});
+
+export const metadata: Metadata = {
+    title: "SpendLens",
+
+    icons: {
+        icon: "/favicon.png",
+        shortcut: "/favicon.png",
+        apple: "/apple-icon.png",
+    },
+};
 
 export default function RootLayout({
     children,
@@ -15,7 +29,8 @@ export default function RootLayout({
         <html lang="en" className={cn("font-sans", geist.variable)}>
             <body>
                 <SessionWrapper>
-                    {children} <Toaster richColors />
+                    {children}
+                    <Toaster richColors />
                 </SessionWrapper>
             </body>
         </html>
