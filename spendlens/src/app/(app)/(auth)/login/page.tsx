@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
@@ -25,9 +25,12 @@ import Link from "next/link";
 type LoginData = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
-    const searchParams = useSearchParams();
+   const [oauthError, setOauthError] = useState<string | null>(null);
 
-    const oauthError = searchParams.get("error");
+useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setOauthError(params.get("error"));
+}, []);
 
     const router = useRouter();
 
