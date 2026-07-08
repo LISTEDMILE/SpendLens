@@ -23,11 +23,9 @@ export default function OtpEmail({ otp }: OtpEmailProps) {
 
             <Body
                 style={{
-                    backgroundColor: "#f4f4f5",
                     fontFamily:
                         "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
                     margin: 0,
-                    padding: "40px 0",
                 }}
             >
                 <Container
