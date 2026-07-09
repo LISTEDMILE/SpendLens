@@ -31,13 +31,19 @@ export async function GET() {
         let paused = 0;
         let cancelled = 0;
         let monthlySpend = 0;
+        let renewToday = 0;
+        let renewTomorrow = 0;
+        let renewThisWeek = 0;
+        let renewThisMonth = 0;
+        let overdue = 0;
 
         const reminderSubscriptions: {
             id: string;
             name: string;
             price: number;
             endDate: Date;
-            daysLeft: number;
+            daysLeftOrDue: number;
+            areDaysLeftOrDue: string;
         }[] = [];
 
         for (const subscription of subscriptions) {
@@ -60,12 +66,41 @@ export async function GET() {
                                 (1000 * 60 * 60 * 24),
                         );
 
+                         if (daysLeft === 0) renewToday++;
+
+    if (daysLeft === 1) renewTomorrow++;
+
+    if (daysLeft >= 0 && daysLeft <= 7) renewThisWeek++;
+
+    if (daysLeft >= 0 && daysLeft <= 30) renewThisMonth++;
+
+   
+
                         reminderSubscriptions.push({
                             id: subscription._id.toString(),
                             name: subscription.name,
                             price: subscription.price,
                             endDate: subscription.endDate,
-                            daysLeft,
+                            daysLeftOrDue: daysLeft,
+                            areDaysLeftOrDue: "left",
+                        });
+                    }
+
+                    if (today > renewalDate) {
+                        const daysDue = Math.ceil(
+                            (today.getTime() - renewalDate.getTime()) /
+                                (1000 * 60 * 60 * 24),
+                        );
+
+                         if (daysDue > 0) overdue++;
+
+                        reminderSubscriptions.push({
+                            id: subscription._id.toString(),
+                            name: subscription.name,
+                            price: subscription.price,
+                            endDate: subscription.endDate,
+                            daysLeftOrDue: daysDue,
+                            areDaysLeftOrDue: "due",
                         });
                     }
 
@@ -81,10 +116,20 @@ export async function GET() {
             }
         }
 
-        reminderSubscriptions.sort(
-            (a, b) =>
-                new Date(a.endDate).getTime() - new Date(b.endDate).getTime(),
-        );
+        reminderSubscriptions.sort((a, b) => {
+    const aOverdue = a.areDaysLeftOrDue === "due";
+    const bOverdue = b.areDaysLeftOrDue === "due";
+
+    // Overdue first
+    if (aOverdue && !bOverdue) return -1;
+    if (!aOverdue && bOverdue) return 1;
+
+    // Then nearest renewal date
+    return (
+        new Date(a.endDate).getTime() -
+        new Date(b.endDate).getTime()
+    );
+});
 
         return SendResponse({
             success: true,
@@ -92,16 +137,22 @@ export async function GET() {
             status: 200,
             data: {
                 stats: {
-                    total,
-                    active,
-                    paused,
-                    cancelled,
-                    monthlySpend,
-                },
+    total,
+    active,
+    paused,
+    cancelled,
+    monthlySpend,
+
+    renewToday,
+    renewTomorrow,
+    renewThisWeek,
+    renewThisMonth,
+    overdue,
+},
 
                 reminders: {
                     count: reminderSubscriptions.length,
-                    subscriptions: reminderSubscriptions
+                    subscriptions: reminderSubscriptions,
                 },
             },
         });

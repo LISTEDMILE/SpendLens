@@ -1,6 +1,3 @@
-
-
-
 "use client";
 
 import Link from "next/link";
@@ -11,12 +8,32 @@ import {
     CalendarDays,
     Bell,
     ArrowUpRight,
+    SlidersHorizontal,
+    X,
+    ArrowUpDown,
 } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
+
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+
+import {
+    Sheet,
+    SheetContent,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from "@/components/ui/sheet";
 
 interface SubscriptionCard {
     _id: string;
@@ -26,6 +43,7 @@ interface SubscriptionCard {
     startDate: string;
     endDate: string;
     reminderDays: number;
+    paymentMethod: "Credit Card" | "Debit Card" | "UPI" | "PayPal" | "Other";
 }
 
 function LoadingCards() {
@@ -68,6 +86,18 @@ export default function SubscriptionsPage() {
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
 
+    const [sortBy, setSortBy] = useState("latest");
+
+    const [statusFilter, setStatusFilter] = useState("all");
+
+    const [paymentFilter, setPaymentFilter] = useState("all");
+
+    const [renewalFilter, setRenewalFilter] = useState("all");
+
+    const [minPrice, setMinPrice] = useState("");
+
+    const [maxPrice, setMaxPrice] = useState("");
+
     useEffect(() => {
         const fetchSubscriptions = async () => {
             try {
@@ -88,12 +118,185 @@ export default function SubscriptionsPage() {
     }, []);
 
     const filteredSubscriptions = useMemo(() => {
-        return subscriptions.filter((subscription) =>
-            subscription.name
-                .toLowerCase()
-                .includes(search.toLowerCase()),
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        let data = [...subscriptions];
+
+        // Search
+        data = data.filter((subscription) =>
+            subscription.name.toLowerCase().includes(search.toLowerCase()),
         );
-    }, [subscriptions, search]);
+
+        // Status
+        if (statusFilter !== "all") {
+            data = data.filter(
+                (subscription) => subscription.status === statusFilter,
+            );
+        }
+
+        // Payment
+        if (paymentFilter !== "all") {
+            data = data.filter(
+                (subscription) => subscription.paymentMethod === paymentFilter,
+            );
+        }
+
+        // Price
+        if (minPrice !== "") {
+            data = data.filter(
+                (subscription) => subscription.price >= Number(minPrice),
+            );
+        }
+
+        if (maxPrice !== "") {
+            data = data.filter(
+                (subscription) => subscription.price <= Number(maxPrice),
+            );
+        }
+
+        // Renewal
+        if (renewalFilter !== "all") {
+            data = data.filter((subscription) => {
+                const renewalDate = new Date(subscription.endDate);
+                renewalDate.setHours(0, 0, 0, 0);
+
+                const reminderDate = new Date(renewalDate);
+                reminderDate.setDate(
+                    reminderDate.getDate() - subscription.reminderDays,
+                );
+
+                const daysLeft = Math.ceil(
+                    (renewalDate.getTime() - today.getTime()) /
+                        (1000 * 60 * 60 * 24),
+                );
+
+                switch (renewalFilter) {
+                    case "alert":
+                        return today >= reminderDate && today <= renewalDate;
+
+                    case "today":
+                        return daysLeft === 0;
+
+                    case "tomorrow":
+                        return daysLeft === 1;
+
+                    case "week":
+                        return daysLeft >= 0 && daysLeft <= 7;
+
+                    case "month":
+                        return daysLeft >= 0 && daysLeft <= 30;
+
+                    case "overdue":
+                        return renewalDate < today;
+
+                    default:
+                        return true;
+                }
+            });
+        }
+
+        // Sort
+        switch (sortBy) {
+            case "latest":
+                data.sort(
+                    (a, b) =>
+                        new Date(b.startDate).getTime() -
+                        new Date(a.startDate).getTime(),
+                );
+                break;
+
+            case "oldest":
+                data.sort(
+                    (a, b) =>
+                        new Date(a.startDate).getTime() -
+                        new Date(b.startDate).getTime(),
+                );
+                break;
+
+            case "renewalAsc":
+                data.sort(
+                    (a, b) =>
+                        new Date(a.endDate).getTime() -
+                        new Date(b.endDate).getTime(),
+                );
+                break;
+
+            case "renewalDesc":
+                data.sort(
+                    (a, b) =>
+                        new Date(b.endDate).getTime() -
+                        new Date(a.endDate).getTime(),
+                );
+                break;
+
+            case "priceLow":
+                data.sort((a, b) => a.price - b.price);
+                break;
+
+            case "priceHigh":
+                data.sort((a, b) => b.price - a.price);
+                break;
+
+            case "az":
+                data.sort((a, b) => a.name.localeCompare(b.name));
+                break;
+
+            case "za":
+                data.sort((a, b) => b.name.localeCompare(a.name));
+                break;
+        }
+
+        return data;
+    }, [
+        subscriptions,
+        search,
+        statusFilter,
+        paymentFilter,
+        renewalFilter,
+        minPrice,
+        maxPrice,
+        sortBy,
+    ]);
+
+    const resetFilters = () => {
+        setStatusFilter("all");
+        setPaymentFilter("all");
+        setRenewalFilter("all");
+        setMinPrice("");
+        setMaxPrice("");
+        setSortBy("latest");
+    };
+
+   const activeFilters = [
+    statusFilter !== "all" && {
+        label: statusFilter,
+        clear: () => setStatusFilter("all"),
+    },
+
+    paymentFilter !== "all" && {
+        label: paymentFilter,
+        clear: () => setPaymentFilter("all"),
+    },
+
+    renewalFilter !== "all" && {
+        label: renewalFilter,
+        clear: () => setRenewalFilter("all"),
+    },
+
+    minPrice && {
+        label: `Min ₹${minPrice}`,
+        clear: () => setMinPrice(""),
+    },
+
+    maxPrice && {
+        label: `Max ₹${maxPrice}`,
+        clear: () => setMaxPrice(""),
+    },
+].filter(Boolean) as {
+    label: string;
+    clear: () => void;
+}[];
 
     if (loading) {
         return (
@@ -105,7 +308,7 @@ export default function SubscriptionsPage() {
         );
     }
 
-        return (
+    return (
         <div className="min-h-screen bg-zinc-950 text-white">
             <div className="mx-auto max-w-7xl px-6 py-10">
                 <div className="mb-8 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
@@ -120,7 +323,7 @@ export default function SubscriptionsPage() {
                         </p>
                     </div>
 
-                     <Button
+                    <Button
                         size="lg"
                         className="rounded-lg bg-amber-600 p-8 border-1 border-white"
                     >
@@ -131,22 +334,292 @@ export default function SubscriptionsPage() {
                     </Button>
                 </div>
 
-                <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                    <div className="relative w-full md:max-w-sm">
-                        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+                <div className="mb-8 space-y-4">
+                    {/* Search + Sort + Filter */}
 
-                        <Input
-                            placeholder="Search subscriptions..."
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                            className="h-11 rounded-lg border-zinc-800 bg-zinc-900 pl-10 text-white placeholder:text-zinc-500 focus-visible:ring-1 focus-visible:ring-zinc-700"
-                        />
+                    <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-start">
+                        <div className="relative w-full lg:max-w-md">
+                            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+
+                            <Input
+                                placeholder="Search subscriptions..."
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                className="h-11 rounded-xl border-zinc-800 bg-zinc-900 pl-10 text-white placeholder:text-zinc-500"
+                            />
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-3">
+                            
+
+                            <Sheet>
+                                <SheetTrigger className="inline-flex h-10 items-center justify-center rounded-md border border-zinc-800 bg-zinc-900 px-4 text-sm font-medium hover:bg-zinc-800">
+                                    <SlidersHorizontal className="mr-2 h-4 w-4" />
+                                    Filters
+                                    {activeFilters.length > 0 && (
+                                        <Badge className="ml-2">
+                                            {activeFilters.length}
+                                        </Badge>
+                                    )}
+                                </SheetTrigger>
+
+                                <SheetContent className="overflow-y-auto border-zinc-800 bg-[#00110e] text-white p-8">
+                                    <SheetHeader>
+                                        <SheetTitle className="text-white text-3xl underline w-full text-center">
+                                            Filters
+                                        </SheetTitle>
+                                    </SheetHeader>
+
+                                    <div className="mt-8 space-y-8">
+                                        {/* STATUS */}
+
+                                        <div>
+                                            <h3 className="mb-3 text-sm font-semibold">
+                                                Status
+                                            </h3>
+
+                                            <Select
+                                                value={statusFilter}
+                                                onValueChange={(value) => {
+                                                    if (value)
+                                                        setStatusFilter(value);
+                                                }}
+                                            >
+                                                <SelectTrigger>
+                                                    <SelectValue />
+                                                </SelectTrigger>
+
+                                                <SelectContent>
+                                                    <SelectItem value="all">
+                                                        All
+                                                    </SelectItem>
+
+                                                    <SelectItem value="active">
+                                                        Active
+                                                    </SelectItem>
+
+                                                    <SelectItem value="paused">
+                                                        Paused
+                                                    </SelectItem>
+
+                                                    <SelectItem value="cancelled">
+                                                        Cancelled
+                                                    </SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+
+                                        {/* PAYMENT */}
+
+                                        <div>
+                                            <h3 className="mb-3 text-sm font-semibold">
+                                                Payment Method
+                                            </h3>
+
+                                            <Select
+                                                value={paymentFilter}
+                                                onValueChange={(value) => {
+                                                    if (value)
+                                                        setPaymentFilter(value);
+                                                }}
+                                            >
+                                                <SelectTrigger>
+                                                    <SelectValue />
+                                                </SelectTrigger>
+
+                                                <SelectContent>
+                                                    <SelectItem value="all">
+                                                        All
+                                                    </SelectItem>
+
+                                                    <SelectItem value="UPI">
+                                                        UPI
+                                                    </SelectItem>
+
+                                                    <SelectItem value="Credit Card">
+                                                        Credit Card
+                                                    </SelectItem>
+
+                                                    <SelectItem value="Debit Card">
+                                                        Debit Card
+                                                    </SelectItem>
+
+                                                    <SelectItem value="PayPal">
+                                                        PayPal
+                                                    </SelectItem>
+
+                                                    <SelectItem value="Other">
+                                                        Other
+                                                    </SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+
+                                        {/* RENEWAL */}
+
+                                        <div>
+                                            <h3 className="mb-3 text-sm font-semibold">
+                                                Renewal
+                                            </h3>
+
+                                            <Select
+                                                value={renewalFilter}
+                                                onValueChange={(value) => {
+                                                    if (value)
+                                                        setRenewalFilter(value);
+                                                }}
+                                            >
+                                                <SelectTrigger>
+                                                    <SelectValue />
+                                                </SelectTrigger>
+
+                                                <SelectContent>
+                                                    <SelectItem value="all">
+                                                        All
+                                                    </SelectItem>
+
+                                                    <SelectItem value="alert">
+                                                        Reminder Window
+                                                    </SelectItem>
+
+                                                    <SelectItem value="today">
+                                                        Today
+                                                    </SelectItem>
+
+                                                    <SelectItem value="tomorrow">
+                                                        Tomorrow
+                                                    </SelectItem>
+
+                                                    <SelectItem value="week">
+                                                        This Week
+                                                    </SelectItem>
+
+                                                    <SelectItem value="month">
+                                                        This Month
+                                                    </SelectItem>
+
+                                                    <SelectItem value="overdue">
+                                                        Overdue
+                                                    </SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+
+                                        {/* PRICE */}
+
+                                        <div>
+                                            <h3 className="mb-3 text-sm font-semibold">
+                                                Price Range
+                                            </h3>
+
+                                            <div className="grid grid-cols-2 gap-3 border-zinc-800 bg-zinc-900">
+                                                <Input
+                                                    type="number"
+                                                    min={0}
+                                                    placeholder="Min ₹"
+                                                    value={minPrice}
+                                                    onChange={(e) =>
+                                                        setMinPrice(
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                />
+
+                                                <Input
+                                                    type="number"
+                                                    min={0}
+                                                    placeholder="Max ₹"
+                                                    value={maxPrice}
+                                                    onChange={(e) =>
+                                                        setMaxPrice(
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <Button
+                                            variant="outline"
+                                            className="w-fit px-8 py-2 mt-6 float-end bg-cyan-950 text-white"
+                                            onClick={resetFilters}
+                                        >
+                                            Reset Filters
+                                        </Button>
+                                    </div>
+                                </SheetContent>
+                            </Sheet>
+
+                            <Select
+                                value={sortBy}
+                                onValueChange={(value) => {
+                                    if (value) setSortBy(value);
+                                }}
+                            >
+                                <SelectTrigger className="w-56 border-zinc-800 bg-zinc-900">
+                                    <ArrowUpDown className="mr-2 h-4 w-4" />
+
+                                    <SelectValue />
+                                </SelectTrigger>
+
+                                <SelectContent >
+                                    <SelectItem value="latest" >
+                                        Latest Added
+                                    </SelectItem>
+
+                                    <SelectItem value="oldest">
+                                        Oldest Added
+                                    </SelectItem>
+
+                                    <SelectItem value="renewalAsc">
+                                        Renewal Date ↑
+                                    </SelectItem>
+
+                                    <SelectItem value="renewalDesc">
+                                        Renewal Date ↓
+                                    </SelectItem>
+
+                                    <SelectItem value="priceLow">
+                                        Price Low → High
+                                    </SelectItem>
+
+                                    <SelectItem value="priceHigh">
+                                        Price High → Low
+                                    </SelectItem>
+
+                                    <SelectItem value="az">Name A-Z</SelectItem>
+
+                                    <SelectItem value="za">Name Z-A</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
                     </div>
 
-                    <p className="text-sm text-zinc-500">
-                        {filteredSubscriptions.length} Subscription
-                        {filteredSubscriptions.length !== 1 && "s"}
-                    </p>
+                    {/* Active Filters */}
+
+                    <div className="flex flex-wrap items-center gap-2">
+    {activeFilters.map((filter) => (
+        <Badge
+            key={filter.label}
+            variant="secondary"
+            className="flex items-center text-wrap gap-2 rounded-full px-3 py-3  border-white max-w-full "
+        >
+            {filter.label}
+
+            <button
+                type="button"
+                onClick={filter.clear}
+                className="rounded-full p-0.5 transition hover:bg-zinc-700"
+            >
+                <X className="h-3 w-3" />
+            </button>
+        </Badge>
+    ))}
+                          <p className="ml-auto text-sm text-zinc-500">
+                            {filteredSubscriptions.length} Subscription
+                            {filteredSubscriptions.length !== 1 && "s"}
+                        </p>
+</div>
                 </div>
 
                 {filteredSubscriptions.length === 0 ? (
@@ -171,9 +644,8 @@ export default function SubscriptionsPage() {
                         </CardContent>
                     </Card>
                 ) : (
-                            <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-                            
-                                                    {filteredSubscriptions.map((subscription) => {
+                    <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                        {filteredSubscriptions.map((subscription) => {
                             const badgeStyles =
                                 subscription.status === "active"
                                     ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
@@ -272,9 +744,8 @@ export default function SubscriptionsPage() {
                             );
                         })}
                     </div>
-                    )}
-            
-                        </div>
+                )}
+            </div>
         </div>
     );
 }

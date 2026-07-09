@@ -11,6 +11,11 @@ import {
     PauseCircle,
     Ban,
     IndianRupee,
+    AlertTriangle,
+    Calendar,
+    CalendarClock,
+    CalendarDays,
+    CalendarRange,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -25,6 +30,12 @@ interface DashboardStats {
     paused: number;
     cancelled: number;
     monthlySpend: number;
+
+    renewToday: number;
+    renewTomorrow: number;
+    renewThisWeek: number;
+    renewThisMonth: number;
+    overdue: number;
 }
 
 interface ReminderSubscription {
@@ -32,7 +43,8 @@ interface ReminderSubscription {
     name: string;
     price: number;
     endDate: string;
-    daysLeft: number;
+    daysLeftOrDue: number;
+    areDaysLeftOrDue: string;
 }
 
 export default function DashboardPage() {
@@ -46,6 +58,11 @@ export default function DashboardPage() {
         paused: 0,
         cancelled: 0,
         monthlySpend: 0,
+        renewToday: 0,
+        renewTomorrow: 0,
+        renewThisWeek: 0,
+        renewThisMonth: 0,
+        overdue: 0,
     });
 
     const [count, setCount] = useState(0);
@@ -166,6 +183,36 @@ export default function DashboardPage() {
                               icon: IndianRupee,
                               color: "text-violet-400",
                           },
+                          {
+                              title: "Renew Today",
+                              value: stats.renewToday,
+                              icon: CalendarClock,
+                              color: "text-red-400",
+                          },
+                          {
+                              title: "Tomorrow",
+                              value: stats.renewTomorrow,
+                              icon: CalendarDays,
+                              color: "text-orange-400",
+                          },
+                          {
+                              title: "This Week",
+                              value: stats.renewThisWeek,
+                              icon: CalendarRange,
+                              color: "text-yellow-400",
+                          },
+                          {
+                              title: "This Month",
+                              value: stats.renewThisMonth,
+                              icon: Calendar,
+                              color: "text-blue-400",
+                          },
+                          {
+                              title: "Overdue",
+                              value: stats.overdue,
+                              icon: AlertTriangle,
+                              color: "text-rose-500",
+                          },
                       ].map((item) => (
                           <Card
                               key={item.title}
@@ -267,16 +314,7 @@ export default function DashboardPage() {
                                 </span>
 
                                 <h2 className="mt-5 text-4xl font-bold">
-                                    {count === 1
-                                        ? `${subscriptions[0].name} renews ${
-                                              subscriptions[0].daysLeft === 0
-                                                  ? "today"
-                                                  : subscriptions[0]
-                                                          .daysLeft === 1
-                                                    ? "tomorrow"
-                                                    : `in ${subscriptions[0].daysLeft} days`
-                                          }`
-                                        : `${count} subscriptions need your attention`}
+                                    {count} subscriptions need your attention
                                 </h2>
 
                                 <p className="mt-4 max-w-xl text-zinc-400">
@@ -297,7 +335,7 @@ export default function DashboardPage() {
                                     <Link
                                         key={subscription.id}
                                         href={`/subscriptions/subscription/${subscription.id}`}
-                                        className="block rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 transition hover:border-amber-400/40"
+                                        className={`block rounded-2xl border  p-5 transition  ${subscription.areDaysLeftOrDue === "due" ? "border-red-600/40 hover:border-red-600  bg-red-600/20" : "border-zinc-800 bg-zinc-900/60 hover:border-amber-400/40"}`}
                                     >
                                         <div className="flex items-center justify-between">
                                             <div>
@@ -306,7 +344,11 @@ export default function DashboardPage() {
                                                 </h3>
 
                                                 <p className="mt-1 text-sm text-zinc-500">
-                                                    Renews{" "}
+                                                    {subscription.areDaysLeftOrDue ===
+                                                    "due"
+                                                        ? "Renewed"
+                                                        : "Renews"}
+                                                    {" - "}
                                                     {new Date(
                                                         subscription.endDate,
                                                     ).toLocaleDateString()}
@@ -322,13 +364,19 @@ export default function DashboardPage() {
                                                     ₹{subscription.price}
                                                 </p>
 
-                                                <p className="rounded-full mt-3 bg-amber-500/15 px-3 py-1 text-xs font-medium text-amber-300">
-                                                    {subscription.daysLeft === 0
-                                                        ? "Today"
-                                                        : subscription.daysLeft ===
-                                                            1
-                                                          ? "Tomorrow"
-                                                          : `${subscription.daysLeft} Days`}
+                                                <p
+                                                    className={`rounded-full mt-3  px-3 py-1 text-xs font-medium ${subscription.areDaysLeftOrDue === "due" ? "text-red-400 bg-black" : "text-amber-300 bg-amber-500/15"} `}
+                                                >
+                                                    {subscription.areDaysLeftOrDue ===
+                                                    "due"
+                                                        ? `Expired ${subscription.daysLeftOrDue} days ago`
+                                                        : subscription.daysLeftOrDue ===
+                                                            0
+                                                          ? "Today"
+                                                          : subscription.daysLeftOrDue ===
+                                                              1
+                                                            ? "Tomorrow"
+                                                            : `${subscription.daysLeftOrDue} Days`}
                                                 </p>
                                             </div>
                                         </div>
