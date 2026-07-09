@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 import gsap from "gsap";
@@ -14,7 +14,11 @@ import {
     Wallet,
     Sparkles,
     BarChart3,
+    CheckCircle2,
 } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "sonner";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -28,6 +32,47 @@ export default function HomePage() {
     const statsRef = useRef<HTMLDivElement>(null);
 
     const featuresRef = useRef<HTMLDivElement>(null);
+
+    const { data: session } = useSession();
+
+    const [count, setCount] = useState(0);
+
+const [subscriptions, setSubscriptions] = useState<
+    {
+        id: string;
+        name: string;
+        price: number;
+        endDate: string;
+        daysLeft: string;
+    }[]
+>([]);
+
+const [loadingReminder, setLoadingReminder] = useState(true);
+
+
+const fetchUpcomingRenewals = async () => {
+    try {
+        setLoadingReminder(true);
+
+        const response = await fetch("/api/alerts");
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            toast.error(data.message || "Failed to load upcoming renewals.");
+            return;
+        }
+
+        setCount(data.data.count);
+        setSubscriptions(data.data.subscriptions);
+    } catch (error) {
+        console.error(error);
+
+        toast.error("Something went wrong while loading reminders.");
+    } finally {
+        setLoadingReminder(false);
+    }
+};
 
     useEffect(() => {
         const ctx = gsap.context(() => {
@@ -128,6 +173,12 @@ export default function HomePage() {
         return () => ctx.revert();
     }, []);
 
+    useEffect(() => {
+    if (!session) return;
+
+    fetchUpcomingRenewals();
+}, [session]);
+
     return (
         <main className="overflow-hidden bg-black text-white">
             {/* Background */}
@@ -173,7 +224,10 @@ export default function HomePage() {
 
                     <div className="hero-btn mt-10 flex flex-col gap-4 sm:flex-row">
                         <Button size="lg" className="h-14 rounded-full px-8">
-                            <Link href="/login" className="flex items-center">
+                            <Link
+                                href={`${session ? "/subscriptions" : "/login"}`}
+                                className="flex items-center"
+                            >
                                 Get Started
                                 <ArrowRight className="ml-2 h-5 w-5" />
                             </Link>
@@ -257,6 +311,164 @@ export default function HomePage() {
                     </div>
                 </div>
             </section>
+
+            {/* =================== Alert ==================*/}
+
+          
+            
+            {session && loadingReminder && (
+    <section className="mx-auto w-full max-w-7xl px-6 py-16">
+        <div className="overflow-hidden rounded-3xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-zinc-900 to-black">
+            <div className="flex flex-col gap-10 p-8 lg:flex-row lg:items-center lg:justify-between">
+                {/* Left */}
+                <div className="max-w-2xl space-y-5">
+                    <Skeleton className="h-8 w-44 rounded-full" />
+
+                    <Skeleton className="h-12 w-[420px] max-w-full rounded-xl" />
+
+                    <Skeleton className="h-5 w-full max-w-lg" />
+
+                    <Skeleton className="h-5 w-80 max-w-full" />
+
+                    <Skeleton className="mt-3 h-11 w-52 rounded-xl" />
+                </div>
+
+                {/* Right */}
+                <div className="w-full max-w-md space-y-4">
+                    {[1, 2, 3].map((item) => (
+                        <div
+                            key={item}
+                            className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5"
+                        >
+                            <div className="flex items-start justify-between">
+                                <div className="space-y-3">
+                                    <Skeleton className="h-5 w-32" />
+
+                                    <Skeleton className="h-4 w-28" />
+                                </div>
+
+                                <div className="space-y-3">
+                                    <Skeleton className="ml-auto h-5 w-16" />
+
+                                    <Skeleton className="ml-auto h-6 w-20 rounded-full" />
+                                </div>
+                            </div>
+
+                            <Skeleton className="mt-5 h-9 w-full rounded-lg" />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    </section>
+)}
+            
+              {session && !loadingReminder && count === 0 && (
+    <section className="mx-auto w-full max-w-7xl px-6 py-16">
+        <div className="overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 via-zinc-900 to-black">
+            <div className="flex flex-col items-center text-center p-10">
+                <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-emerald-500/15">
+                    <CheckCircle2 className="h-10 w-10 text-emerald-400" />
+                </div>
+
+                <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-1.5 text-sm font-medium text-emerald-300">
+                    Everything Looks Good
+                </span>
+
+                <h2 className="mt-5 text-3xl font-bold text-white sm:text-4xl">
+                    You're all caught up 🎉
+                </h2>
+
+                <p className="mt-4 max-w-2xl text-zinc-400">
+                    None of your subscriptions are due for renewal right now.
+                    We'll remind you automatically when it's time.
+                </p>
+  <Link href="/dashboard" className="mt-12  inline-block rounded-lg bg-amber-500 px-6 py-3 text-black hover:bg-amber-400"
+                >
+                
+                   
+                        View Dashboard
+                   
+                               
+                                 </Link>
+            </div>
+        </div>
+    </section>
+            )}
+            
+         { session && !loadingReminder  && count!==0 && <section className="mx-auto w-full max-w-7xl px-6 py-16">
+    <div className="overflow-hidden rounded-3xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-zinc-900 to-black">
+        <div className="flex flex-col gap-10 p-8 lg:flex-row lg:items-center lg:justify-between">
+            {/* Left */}
+            <div className="max-w-2xl">
+                <span className="inline-flex items-center rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-sm font-medium text-amber-300">
+                    ⚠ Upcoming Renewals
+                </span>
+
+                <h2 className="mt-5 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                    {count === 1
+                        ? `${subscriptions[0].name} renews soon`
+                        : `${count} subscriptions require your attention`}
+                </h2>
+
+                <p className="mt-4 max-w-xl text-zinc-400">
+                    {count === 1
+                        ? "Review this subscription before its renewal date to avoid an unexpected charge."
+                        : "Some of your subscriptions are approaching renewal. Review them now and stay in control of your recurring expenses."}
+                </p>
+
+                            <Link href="/dashboard" className="mt-12  inline-block rounded-lg bg-amber-500 px-6 py-3 text-black hover:bg-amber-400">
+               
+                   
+                        View Dashboard
+                    </Link>
+                
+            </div>
+
+            {/* Right */}
+            <div className="w-full max-w-md space-y-4">
+                {subscriptions.map((subscription) => (
+                    <Link 
+                        href={`subscriptions/subscription/${subscription.id}`}
+                        key={subscription.id}
+                        className="flex items-center justify-between rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 backdrop-blur"
+                    >
+                        <div>
+                            <h3 className="font-semibold text-white">
+                                {subscription.name}
+                            </h3>
+
+                            <p className="mt-1 text-sm text-zinc-500">
+                                Renews{" "}
+                                {new Date(
+                                    subscription.endDate,
+                                ).toLocaleDateString()}
+                            </p>
+
+                            <p className="mt-4 text-sm hover:underline text-yellow-600"> View</p>
+                        </div>
+
+                        <div className="text-right">
+                            <p className="font-semibold text-white">
+                                ₹{subscription.price}
+                            </p>
+
+                            <span className="mt-2 inline-block rounded-full bg-amber-500/15 px-3 py-1 text-xs font-medium text-amber-300">
+                                {subscription.daysLeft} {" days left"}
+                            </span>
+                        </div>
+                    </Link>
+                ))}
+
+                {count > 3 && (
+                    <p className="text-center text-sm text-zinc-500">
+                        +{count - 3} more subscription{count - 3 > 1 ? "s" : ""}
+                    </p>
+                )}
+            </div>
+        </div>
+    </div>
+</section>}
 
             {/* ================= STATS ================= */}
 
@@ -639,7 +851,7 @@ export default function HomePage() {
                                 className="h-14 w-full rounded-full px-8 sm:w-auto"
                             >
                                 <Link
-                                    href="/login"
+                                    href={`${session ? "/subscriptions" : "/login"}`}
                                     className="flex items-center"
                                 >
                                     Get Started
@@ -647,15 +859,17 @@ export default function HomePage() {
                                 </Link>
                             </Button>
 
-                            <Link href="/signUp">
-                                <Button
-                                    size="lg"
-                                    variant="outline"
-                                    className="h-14 w-full rounded-lg px-8 py-4 border-zinc-700 bg-transparent text-white hover:bg-zinc-900 sm:w-auto"
-                                >
-                                    Create Account
-                                </Button>
-                            </Link>
+                            {!session && (
+                                <Link href="/signUp">
+                                    <Button
+                                        size="lg"
+                                        variant="outline"
+                                        className="h-14 w-full rounded-lg px-8 py-4 border-zinc-700 bg-transparent text-white hover:bg-zinc-900 sm:w-auto"
+                                    >
+                                        Create Account
+                                    </Button>
+                                </Link>
+                            )}
                         </div>
                     </div>
                 </div>
