@@ -13,6 +13,7 @@ import { TrashIcon } from "lucide-react";
 interface Profile {
     _id: string;
     name: string;
+    username: string;
     avatar: string;
 }
 
@@ -24,6 +25,8 @@ export default function ProfilePage() {
 
     const [avatar, setAvatar] = useState("");
 
+    const [username, setUsername] = useState("");
+
     const [imageFile, setImageFile] = useState<File | null>(null);
 
     const [preview, setPreview] = useState("");
@@ -33,9 +36,17 @@ export default function ProfilePage() {
 
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
+    const [stringDelete, setStringDelete] = useState("");
+
     const deleteAccount = async () => {
         try {
+            if (stringDelete !== "Delete") {
+                toast.error("Enter ( Delete ) in input box to delete account");
+                return;
+            }
             setIsDeleting(true);
+
+            
 
             const response = await fetch("/api/deleteUser", {
                 method: "DELETE",
@@ -75,6 +86,7 @@ export default function ProfilePage() {
                 const profile: Profile = data.data;
 
                 setName(profile.name);
+                setUsername(profile.username);
                 setAvatar(profile.avatar);
                 setPreview(profile.avatar);
             } catch (error) {
@@ -197,10 +209,16 @@ aria-invalid:border-red-400
                             />
                         </div>
 
+                          <div className="w-full space-y-2">
+                            <Label>Username</Label>
+
+                            <Input value={username} disabled />
+                        </div>
+
                         <div className="w-full space-y-2">
                             <Label>Current Avatar URL</Label>
 
-                            <Input value={avatar} disabled />
+                            <Input value={avatar  || "URL will be updated on changing Avatar"} disabled />
                         </div>
 
                         <Button
@@ -233,6 +251,27 @@ aria-invalid:border-red-400
                             Are you sure want to delete your account <br /> This
                             can't be undone
                         </h1>
+
+                         <Label>Enter ( <span>Delete</span> ) to delete account</Label>
+
+                            <Input
+                                className="
+        h-11
+        rounded-lg
+        border-zinc-300
+        focus-visible:ring-1
+        focus-visible:ring-zinc-400
+        focus-visible:border-zinc-400
+        aria-invalid:ring-0
+aria-invalid:border-red-400
+    
+    "
+
+                                value={stringDelete}
+                                onChange={(e) => setStringDelete(e.target.value)}
+                        />
+                        
+
                         <div className="flex justify-end gap-6">
                             <Button
                                 onClick={() => setShowDeleteDialog(false)}

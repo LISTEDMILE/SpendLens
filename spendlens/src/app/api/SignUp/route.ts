@@ -31,7 +31,10 @@ export async function POST(request: Request) {
             });
         }
 
-        const { username, name, password, otp } = result.data;
+        // otp resend ............
+
+        // const { username, name, password, otp } = result.data;
+        const { username, name, password } = result.data;
 
         const existingUser = await UserModel.findOne({ username });
         if (existingUser)
@@ -40,22 +43,25 @@ export async function POST(request: Request) {
                 message: "Username already register",
                 status: 400,
             });
+        
+        
+        // otp resend ...........................
 
-        const findOtp = await OtpModel.findOne({ username }).select("otp");
-        if (!findOtp)
-            return SendResponse({
-                success: false,
-                message: "Enter valid OTP",
-                status: 400,
-            });
-        const validOtp = await bcrypt.compare(otp, findOtp.otp);
+        // const findOtp = await OtpModel.findOne({ username }).select("otp");
+        // if (!findOtp)
+        //     return SendResponse({
+        //         success: false,
+        //         message: "Enter valid OTP",
+        //         status: 400,
+        //     });
+        // const validOtp = await bcrypt.compare(otp, findOtp.otp);
 
-        if (!validOtp)
-            return SendResponse({
-                success: false,
-                message: "Enter valid OTP",
-                status: 400,
-            });
+        // if (!validOtp)
+        //     return SendResponse({
+        //         success: false,
+        //         message: "Enter valid OTP",
+        //         status: 400,
+        //     });
 
         const hashedPass = await bcrypt.hash(password, 10);
 

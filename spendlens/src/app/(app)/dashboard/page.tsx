@@ -305,10 +305,10 @@ export default function DashboardPage() {
             )}
 
             {!loading && count > 0 && (
-                <section className="mx-auto mt-16 w-full max-w-7xl px-6">
+                <section className="mx-auto mt-16 w-full max-w-7xl px-3 sm:px-6">
                     <div className="overflow-hidden rounded-3xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-zinc-900 to-black">
-                        <div className="flex flex-col gap-10 p-8 lg:flex-row lg:items-start lg:justify-between">
-                            <div className="max-w-2xl mt-">
+                        <div className="flex flex-col gap-10 px-4  py-8 sm:p-8 lg:flex-row lg:items-start lg:justify-between">
+                            <div className="max-w-2xl">
                                 <span className="inline-flex items-center rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-sm font-medium text-amber-300">
                                     ⚠ Upcoming Renewals
                                 </span>
@@ -337,8 +337,8 @@ export default function DashboardPage() {
                                         href={`/subscriptions/subscription/${subscription.id}`}
                                         className={`block rounded-2xl border  p-5 transition  ${subscription.areDaysLeftOrDue === "due" ? "border-red-600/40 hover:border-red-600  bg-red-600/20" : "border-zinc-800 bg-zinc-900/60 hover:border-amber-400/40"}`}
                                     >
-                                        <div className="flex items-center justify-between">
-                                            <div>
+                                        <div className="flex flex-col-reverse gap-6  sm:flex-row items-center justify-between">
+                                            <div className="w-full sm:w-fit">
                                                 <h3 className="font-semibold">
                                                     {subscription.name}
                                                 </h3>
@@ -359,13 +359,13 @@ export default function DashboardPage() {
                                                 </p>
                                             </div>
 
-                                            <div className="text-right">
+                                            <div className="text-right w-full sm:w-fit">
                                                 <p className="font-semibold text-white">
                                                     ₹{subscription.price}
                                                 </p>
 
                                                 <p
-                                                    className={`rounded-full mt-3  px-3 py-1 text-xs font-medium ${subscription.areDaysLeftOrDue === "due" ? "text-red-400 bg-black" : "text-amber-300 bg-amber-500/15"} `}
+                                                    className={`rounded-full mt-3  px-3 py-1 text-xs font-medium w-fit ${subscription.areDaysLeftOrDue === "due" ? "text-red-400 bg-black" : "text-amber-300 bg-amber-500/15"} `}
                                                 >
                                                     {subscription.areDaysLeftOrDue ===
                                                     "due"

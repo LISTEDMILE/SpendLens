@@ -36,7 +36,8 @@ export default function SignupPage() {
             name: "",
             username: "",
             password: "",
-            otp: "",
+            // otp resend ...................
+            // otp: "",
         },
     });
 
@@ -220,7 +221,26 @@ export default function SignupPage() {
                                     )}
                                 />
                             </div>
-                            <Button
+
+
+{/** ================================================= */}
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            {/* otp resend ..........*/}
+                            {/* otp logic due to resend subscription */}
+
+                            {/* <Button
                                 type="button"
                                 className="h-11 w-fit rounded-lg px-8 py-6 bg-zinc-600 text-white"
                                 disabled={loadingOtp}
@@ -259,7 +279,25 @@ export default function SignupPage() {
                                         </FormItem>
                                     )}
                                 />
-                            )}
+                            )} */}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{/** ================================================= */}
 
                             {error && (
                                 <div className="rounded-lg border border-red-200 bg-red-50 p-3">
@@ -277,7 +315,10 @@ export default function SignupPage() {
                                 </div>
                             )}
 
-                            {otpSent && (
+                            {/** otp resend ............... */}
+                            {/** remove the compo below commented and uncomment this otp will start working.... */}
+
+                            {/* {otpSent && (
                                 <div className="space-y-3 pt-2">
                                     <Button
                                         type="button"
@@ -290,7 +331,20 @@ export default function SignupPage() {
                                             : "Create Account"}
                                     </Button>
                                 </div>
-                            )}
+                            )} */}
+
+                            <div className="space-y-3 pt-2">
+                                    <Button
+                                        type="button"
+                                        disabled={loadingSignup}
+                                        onClick={form.handleSubmit(signup)}
+                                        className="h-11 w-full rounded-lg bg-zinc-800 text-white"
+                                    >
+                                        {loadingSignup
+                                            ? "Creating Account..."
+                                            : "Create Account"}
+                                    </Button>
+                                </div>
                         </form>
                     </Form>
 

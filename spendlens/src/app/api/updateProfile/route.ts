@@ -21,7 +21,7 @@ export async function GET() {
         const id = session.user.id;
 
         const user = await UserModel.findById(id)
-            .select("_id name avatar")
+            .select("_id name username avatar")
             .lean();
 
         if (!user)
