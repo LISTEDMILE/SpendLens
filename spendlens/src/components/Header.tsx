@@ -73,7 +73,7 @@ export default function Header() {
                 {/* Right Section */}
                 {session ? (
                     <Link
-                        href={"updateProfile"}
+                        href={"/updateProfile"}
                         className="flex items-center gap-4"
                     >
                         <Avatar>
@@ -87,14 +87,7 @@ export default function Header() {
                             </AvatarFallback>
                         </Avatar>
 
-                        {/* <div className="">
-                            <p className="text-sm font-semibold">
-                                {session.user.name}
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                                {session.user.email}
-                            </p>
-                        </div> */}
+                       
 
                         <div className="min-w-0 max-w-[80px] sm:max-w-xs md:max-w-sm lg:max-w-none">
     <p className="truncate lg:whitespace-normal lg:overflow-visible text-sm font-semibold">
@@ -138,7 +131,7 @@ export default function Header() {
                         </button>
                         {session ? (
                             <Link
-                                href={"updateProfile"}
+                                href={"/updateProfile"}
                                 onClick={() => setShowSideBar(false)}
                                 className="flex items-center gap-4"
                             >
