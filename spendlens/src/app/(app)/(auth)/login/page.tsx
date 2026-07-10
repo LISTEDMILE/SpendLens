@@ -25,12 +25,12 @@ import Link from "next/link";
 type LoginData = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
-   const [oauthError, setOauthError] = useState<string | null>(null);
+    const [oauthError, setOauthError] = useState<string | null>(null);
 
-useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    setOauthError(params.get("error"));
-}, []);
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        setOauthError(params.get("error"));
+    }, []);
 
     const router = useRouter();
 
@@ -43,6 +43,14 @@ useEffect(() => {
             password: "",
         },
     });
+
+    const loginByOAuth = async (method: "google" | "github") => {
+        setLoading(true);
+
+        await signIn(method, {
+            callbackUrl: "/subscriptions",
+        });
+    };
 
     const onSubmit = async (values: LoginData) => {
         setLoading(true);
@@ -181,24 +189,18 @@ useEffect(() => {
                     <div className="space-y-3">
                         <Button
                             variant="outline"
+                            disabled={loading}
                             className="h-11 w-full rounded-lg"
-                            onClick={() =>
-                                signIn("google", {
-                                    callbackUrl: "/subscriptions",
-                                })
-                            }
+                            onClick={() => loginByOAuth("google")}
                         >
                             Continue with Google
                         </Button>
 
                         <Button
                             variant="outline"
+                            disabled={loading}
                             className="h-11 w-full rounded-lg"
-                            onClick={() =>
-                                signIn("github", {
-                                    callbackUrl: "/subscriptions",
-                                })
-                            }
+                            onClick={() => loginByOAuth("github")}
                         >
                             Continue with GitHub
                         </Button>
@@ -213,7 +215,9 @@ useEffect(() => {
                             variant="ghost"
                             className="mt-2 w-full rounded-lg"
                         >
-                            <Link href="/signUp" className="underline">{"Create Account ->"}</Link>
+                            <Link href="/signUp" className="underline">
+                                {"Create Account ->"}
+                            </Link>
                         </Button>
                     </div>
                 </div>

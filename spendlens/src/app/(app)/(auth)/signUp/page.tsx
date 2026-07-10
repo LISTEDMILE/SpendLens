@@ -76,6 +76,14 @@ export default function SignupPage() {
         }
     }
 
+    const loginByOAuth = async (method: "google" | "github") => {
+        setLoadingSignup(true);
+
+        await signIn(method, {
+            callbackUrl: "/subscriptions",
+        });
+    };
+
     // ---------------- SIGN UP ----------------
 
     async function signup(values: SignupFormValues) {
@@ -222,20 +230,7 @@ export default function SignupPage() {
                                 />
                             </div>
 
-
-{/** ================================================= */}
-
-
-
-
-
-
-
-
-
-
-
-
+                            {/** ================================================= */}
 
                             {/* otp resend ..........*/}
                             {/* otp logic due to resend subscription */}
@@ -281,23 +276,7 @@ export default function SignupPage() {
                                 />
                             )} */}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{/** ================================================= */}
+                            {/** ================================================= */}
 
                             {error && (
                                 <div className="rounded-lg border border-red-200 bg-red-50 p-3">
@@ -334,17 +313,17 @@ export default function SignupPage() {
                             )} */}
 
                             <div className="space-y-3 pt-2">
-                                    <Button
-                                        type="button"
-                                        disabled={loadingSignup}
-                                        onClick={form.handleSubmit(signup)}
-                                        className="h-11 w-full rounded-lg bg-zinc-800 text-white"
-                                    >
-                                        {loadingSignup
-                                            ? "Creating Account..."
-                                            : "Create Account"}
-                                    </Button>
-                                </div>
+                                <Button
+                                    type="button"
+                                    disabled={loadingSignup}
+                                    onClick={form.handleSubmit(signup)}
+                                    className="h-11 w-full rounded-lg bg-zinc-800 text-white"
+                                >
+                                    {loadingSignup
+                                        ? "Creating Account..."
+                                        : "Create Account"}
+                                </Button>
+                            </div>
                         </form>
                     </Form>
 
@@ -362,8 +341,9 @@ export default function SignupPage() {
                         <Button
                             variant="outline"
                             type="button"
+                            disabled={loadingSignup}
                             className="h-11 w-full rounded-lg"
-                            onClick={() => signIn("google")}
+                            onClick={() => loginByOAuth("google")}
                         >
                             Continue with Google
                         </Button>
@@ -371,8 +351,9 @@ export default function SignupPage() {
                         <Button
                             variant="outline"
                             type="button"
+                            disabled={loadingSignup}
                             className="h-11 w-full rounded-lg"
-                            onClick={() => signIn("github")}
+                            onClick={() => loginByOAuth("github")}
                         >
                             Continue with GitHub
                         </Button>
@@ -387,7 +368,9 @@ export default function SignupPage() {
                             variant="ghost"
                             className="mt-2 w-full rounded-lg"
                         >
-                            <Link href="/login" className="underline">{"Sign In ->"}</Link>
+                            <Link href="/login" className="underline">
+                                {"Sign In ->"}
+                            </Link>
                         </Button>
                     </div>
                 </div>
