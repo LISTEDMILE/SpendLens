@@ -8,18 +8,48 @@ export async function GET(request: Request) {
 
         if (auth !== `Bearer ${process.env.CRON_SECRET}`) {
             return Response.json(
-                { success: false, message: "Unauthorized" },
+                {
+                    success: false,
+                    message: "Unauthorized",
+                },
                 { status: 401 },
             );
         }
+
         await dbConnect();
 
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        const subscriptions = await SubscriptionModel.find({
-            status: "active",
-        }).populate("user");
+        const subscriptions = await SubscriptionModel.aggregate([
+            {
+                $match: {
+                    status: "active",
+                },
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "user",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+            {
+                $unwind: "$user",
+            },
+            {
+                $project: {
+                    name: 1,
+                    price: 1,
+                    endDate: 1,
+                    reminderDays: 1,
+                    "user._id": 1,
+                    "user.name": 1,
+                    "user.username": 1,
+                },
+            },
+        ]);
 
         const reminderMap = new Map<
             string,
@@ -36,45 +66,43 @@ export async function GET(request: Request) {
         >();
 
         for (const subscription of subscriptions) {
-            const user = subscription.user as any;
-
-            if (!user) continue;
-
             const renewalDate = new Date(subscription.endDate);
             renewalDate.setHours(0, 0, 0, 0);
 
             const reminderDate = new Date(renewalDate);
             reminderDate.setDate(
-                reminderDate.getDate() - subscription.reminderDays,
+                reminderDate.getDate() - subscription.reminderDays
             );
 
-            // Only send reminders during the reminder window
-            if (today >= reminderDate && today <= renewalDate) {
-                if (!reminderMap.has(user._id.toString())) {
-                    reminderMap.set(user._id.toString(), {
-                        name: user.name,
-                        username: user.username,
-                        subscriptions: [],
-                    });
-                }
+            if (today < reminderDate || today > renewalDate) continue;
 
-                reminderMap.get(user._id.toString())!.subscriptions.push({
-                    name: subscription.name,
-                    price: subscription.price,
-                    renewalDate,
-                    reminderDays: subscription.reminderDays,
+            const userId = subscription.user._id.toString();
+
+            if (!reminderMap.has(userId)) {
+                reminderMap.set(userId, {
+                    name: subscription.user.name,
+                    username: subscription.user.username,
+                    subscriptions: [],
                 });
             }
-        }
 
-        // Send one email per user
-        for (const [, reminder] of reminderMap) {
-            await SendSubscriptionReminder({
-                name: reminder.name,
-                username: reminder.username,
-                subscriptions: reminder.subscriptions,
+            reminderMap.get(userId)!.subscriptions.push({
+                name: subscription.name,
+                price: subscription.price,
+                renewalDate,
+                reminderDays: subscription.reminderDays,
             });
         }
+
+        await Promise.all(
+            [...reminderMap.values()].map((reminder) =>
+                SendSubscriptionReminder({
+                    name: reminder.name,
+                    username: reminder.username,
+                    subscriptions: reminder.subscriptions,
+                })
+            )
+        );
 
         return Response.json(
             {
@@ -83,7 +111,7 @@ export async function GET(request: Request) {
             },
             {
                 status: 200,
-            },
+            }
         );
     } catch (error) {
         console.error(error);
@@ -95,7 +123,7 @@ export async function GET(request: Request) {
             },
             {
                 status: 500,
-            },
+            }
         );
     }
 }
