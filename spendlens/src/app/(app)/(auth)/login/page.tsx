@@ -88,12 +88,10 @@ export default function LoginPage() {
                 <div className="w-full rounded-2xl bg-white p-8 shadow-2xl">
                     <div className="mb-8 text-center">
                         <h1 className="text-3xl font-bold text-zinc-900">
-                            Welcome Back
+                            Login
                         </h1>
 
-                        <p className="mt-2 text-sm text-zinc-500">
-                            Sign in to continue managing your subscriptions.
-                        </p>
+                        
                     </div>
 
                     {oauthError === "AccessDenied" && (

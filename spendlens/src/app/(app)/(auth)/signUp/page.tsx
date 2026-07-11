@@ -124,7 +124,7 @@ export default function SignupPage() {
                 <div className="w-full rounded-2xl bg-white p-8 shadow-2xl">
                     <div className="mb-8 text-center">
                         <h1 className="text-3xl font-bold text-zinc-900">
-                            Create Account
+                            Sign Up
                         </h1>
 
                         <p className="mt-2 text-sm text-zinc-500">
